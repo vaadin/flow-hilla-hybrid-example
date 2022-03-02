@@ -1,6 +1,6 @@
 package com.vaadin.hybrid.data;
 
-import com.vaadin.fusion.Nonnull;
+import dev.hilla.Nonnull;
 import java.util.UUID;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
