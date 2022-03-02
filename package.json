@@ -415,6 +415,8 @@
     "date-fns": "$date-fns",
     "line-awesome": "$line-awesome",
     "lit": "$lit",
-    "mobx": "$mobx"
+    "mobx": "$mobx",
+    "@hilla/form": "$@hilla/form",
+    "@hilla/frontend": "$@hilla/frontend"
   }
 }
