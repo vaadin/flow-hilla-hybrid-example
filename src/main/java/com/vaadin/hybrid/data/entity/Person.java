@@ -1,6 +1,6 @@
 package com.vaadin.hybrid.data.entity;
 
-import com.vaadin.fusion.Nonnull;
+import dev.hilla.Nonnull;
 import com.vaadin.hybrid.data.AbstractEntity;
 import java.time.LocalDate;
 import javax.persistence.Entity;

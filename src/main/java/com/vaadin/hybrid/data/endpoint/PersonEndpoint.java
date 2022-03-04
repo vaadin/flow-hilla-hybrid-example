@@ -1,8 +1,8 @@
 package com.vaadin.hybrid.data.endpoint;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.fusion.Endpoint;
-import com.vaadin.fusion.Nonnull;
+import dev.hilla.Endpoint;
+import dev.hilla.Nonnull;
 import com.vaadin.hybrid.data.entity.Person;
 import com.vaadin.hybrid.data.service.PersonService;
 import java.util.Optional;
