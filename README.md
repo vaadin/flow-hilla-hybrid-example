@@ -1,3 +1,7 @@
+# ⚠️ This repository is deprecated ⚠️
+
+**An up-to-date example of Vaadin Flow + Hilla application can be obtained is available at [start.vaadin.com](https://start.vaadin.com/).**
+
 # Vaadin-Hilla Hybrid Example
 
 This project demonstrates an application that includes both Vaadin and Hilla views. It includes two Master-Detail views, one Flow-based and another Hilla-based, that both use the same backend entity and service.
