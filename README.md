@@ -1,6 +1,6 @@
 # ⚠️ This repository is deprecated ⚠️
 
-**An up-to-date example of Vaadin Flow + Hilla application can be obtained is available at [start.vaadin.com](https://start.vaadin.com/).**
+**An up-to-date example of Vaadin Flow + Hilla application can is available at [start.vaadin.com](https://start.vaadin.com/).**
 
 # Vaadin-Hilla Hybrid Example
 
