@@ -13,7 +13,6 @@
         <java.version>17</java.version>
         <vaadin.version>24.3.0</vaadin.version>
         <hilla.version>2.5.0.beta1</hilla.version>
-        <hilla.plugin.version>2.4.0</hilla.plugin.version>
     </properties>
 
     <parent>
@@ -38,6 +37,16 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <url>https://maven.vaadin.com/vaadin-prereleases</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencyManagement>
         <dependencies>
@@ -104,7 +113,7 @@
             <plugin>
                 <groupId>dev.hilla</groupId>
                 <artifactId>hilla-maven-plugin</artifactId>
-                <version>${hilla.plugin.version}</version>
+                <version>${hilla.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -138,7 +147,7 @@
                     <plugin>
                         <groupId>dev.hilla</groupId>
                         <artifactId>hilla-maven-plugin</artifactId>
-                        <version>${hilla.plugin.version}</version>
+                        <version>${hilla.version}</version>
                         <executions>
                             <execution>
                                 <goals>
