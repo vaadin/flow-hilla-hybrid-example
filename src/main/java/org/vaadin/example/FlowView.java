@@ -1,14 +1,14 @@
 package org.vaadin.example;
 
-import com.vaadin.flow.component.html.H3;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.example.colorful.RgbaColor;
+import org.vaadin.example.colorful.RgbaColorPicker;
 
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 /**
@@ -26,30 +26,34 @@ import com.vaadin.flow.router.Route;
 @Route("flow")
 public class FlowView extends VerticalLayout {
 
-    /**
-     * Construct a new Vaadin view.
-     * <p>
-     * Build the initial UI state for the user accessing the application.
-     *
-     * @param service
-     *            The message service. Automatically injected Spring managed
-     *            bean.
-     */
+    public static class ColorValueDisplay  extends Paragraph {
+        public ColorValueDisplay() {
+            getStyle().setFont("bold 30px sans-serif");
+        }
+
+        public void setColor(RgbaColor color) {
+            setText(color.toString());
+            getStyle().setColor(color.toCssColor());
+        }
+    }
+
     public FlowView(@Autowired GreetService service) {
-
-        // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-
-        // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Say hello", e -> {
-            add(new Paragraph(service.greet(textField.getValue())));
+        var colorPicker = new RgbaColorPicker();
+        colorPicker.addValueChangeListener(e -> {
+            Notification.show("Value now: " + e.getValue().toCssColor());
         });
-
-        // Use custom CSS classes to apply styling. This is defined in
-        // styles.css.
-        addClassName("centered-content");
-
-        add( new H3("Flow View"), textField, button);
+        add(colorPicker);
+        var p = new ColorValueDisplay();
+        add(p);
+        add(new HorizontalLayout(
+                        new Button("Show value", e -> {
+                            p.setColor(colorPicker.getValue());
+                        }),
+                        new Button("Make green", e -> {
+                            colorPicker.setValue(new RgbaColor(0,255,0, 0.8));
+                        })
+                )
+        );
     }
 
 }
