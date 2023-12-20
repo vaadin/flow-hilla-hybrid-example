@@ -169,7 +169,6 @@
     "@vaadin/avatar": "$@vaadin/avatar",
     "@hilla/react-crud": "$@hilla/react-crud",
     "@vaadin/radio-group": "$@vaadin/radio-group",
-    "react-colorful": "$react-colorful",
     "@hilla/generator-typescript-plugin-barrel": "$@hilla/generator-typescript-plugin-barrel",
     "@vaadin/horizontal-layout": "$@vaadin/horizontal-layout",
     "date-fns": "$date-fns",
@@ -197,7 +196,8 @@
     "@hilla/generator-typescript-plugin-backbone": "$@hilla/generator-typescript-plugin-backbone",
     "@vaadin/message-input": "$@vaadin/message-input",
     "@vaadin/email-field": "$@vaadin/email-field",
-    "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli"
+    "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli",
+    "react-colorful": "$react-colorful"
   },
   "vaadin": {
     "dependencies": {

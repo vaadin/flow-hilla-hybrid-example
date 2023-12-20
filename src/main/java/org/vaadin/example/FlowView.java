@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 /**
@@ -24,6 +25,7 @@ import com.vaadin.flow.router.Route;
  * that shows a greeting message in a notification.
  */
 @Route("flow")
+@PreserveOnRefresh
 public class FlowView extends VerticalLayout {
 
     public static class ColorValueDisplay  extends Paragraph {
@@ -39,18 +41,28 @@ public class FlowView extends VerticalLayout {
 
     public FlowView(@Autowired GreetService service) {
         var colorPicker = new RgbaColorPicker();
+        var colorPicker2 = new RgbaColorPicker();
         colorPicker.addValueChangeListener(e -> {
             Notification.show("Value now: " + e.getValue().toCssColor());
         });
         add(colorPicker);
+
+
+        colorPicker2.addValueChangeListener(e -> {
+            Notification.show("Value now: " + e.getValue().toCssColor());
+        });
+        add(colorPicker2);
+
         var p = new ColorValueDisplay();
         add(p);
         add(new HorizontalLayout(
                         new Button("Show value", e -> {
                             p.setColor(colorPicker.getValue());
+                            p.setColor(colorPicker2.getValue());
                         }),
                         new Button("Make green", e -> {
                             colorPicker.setValue(new RgbaColor(0,255,0, 0.8));
+                            colorPicker2.setValue(new RgbaColor(0,255,0, 0.8));
                         })
                 )
         );

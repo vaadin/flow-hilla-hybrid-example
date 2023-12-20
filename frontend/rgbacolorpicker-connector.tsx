@@ -1,32 +1,38 @@
 import React, { Component, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { RgbaColorPicker } from "react-colorful";
+import {createRoot, Root} from 'react-dom/client';
+import {RgbaColor, RgbaColorPicker} from "react-colorful";
 
-window.rgbacolorpickerConnectorInit = (element, initialValue)  => {
+const rootMap = new WeakMap<Element, Root>();
+
+(window as any).rgbacolorpickerConnectorInit = (element : Element, initialValue : RgbaColor)  => {
     const root = createRoot(element);
+
+    rootMap.set(element, root);
 
     // to use useState, need a React component
     const Wrapper = () => {
         const [color, setColor] = useState(initialValue);
 
-        const onChange = (rgba) => {
+        const onChange = (rgba : RgbaColor) => {
             // maintain the state as using useState
             setColor(rgba)
             // ... and fire a custom event that is listened by the
             // actual Java component. Could also just use
             // element.$server.myClientCallableMethod, but debouncing
             // is supported when using events
-            const event = new Event("color-change");
-            event.rgba = rgba;
+            const event = new CustomEvent<RgbaColor>("color-change", {detail : rgba});
             element.dispatchEvent(event);
         };
-        element._c = {};
-        // this is called by the server if value changed in the JVM side
-        // triggers re-render as using useState
-        element._c.setValue = newValue => setColor(newValue);
+        // @ts-ignore
+        element._c = {setValue : setColor};
 
         return <RgbaColorPicker color={color} onChange={onChange} />;
     };
     root.render(<Wrapper/>);
 
+}
+
+(window as any).rgbacolorpickerConnectorUnmount = (element:Element) => {
+    rootMap.get(element)?.unmount();
+    rootMap.delete(element);
 }
