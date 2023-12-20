@@ -1,5 +1,7 @@
 package org.vaadin.example.colorful;
 
+import elemental.json.JsonObject;
+
 // { r: 200, g: 150, b: 35, a: 0.5 }
 public record RgbaColor(int r, int g, int b, double a) {
 
