@@ -1,5 +1,6 @@
 import {createRoot, Root} from "react-dom/client";
-import {createElement, ReactNode, useReducer} from "react";
+import React, {createElement, Dispatch, ReactNode, useReducer} from "react";
+import {AbstractModel, DetachedModelConstructor, Value} from "@hilla/form";
 
 function replaceStateReducer<T>(_: T, state: T) {
   return state;
@@ -8,8 +9,8 @@ function replaceStateReducer<T>(_: T, state: T) {
 export abstract class ReactAdapterElement<T = unknown> extends HTMLElement {
   #root: Root | undefined = undefined;
   #state: T;
-  #dispatchState: (state: T) => void = (state: T) => {};
-  #Wrapper: () => ReactNode;
+  #dispatchState: (state: T) => void = () => {};
+  readonly #Wrapper: () => ReactNode;
   #unmountComplete = Promise.resolve();
 
   protected abstract initializeState(): T;
@@ -65,5 +66,38 @@ export abstract class ReactAdapterElement<T = unknown> extends HTMLElement {
     this.#state = state;
     this.#dispatchState = dispatch;
     return this.render();
+  }
+}
+
+export class ReactAdapterStub<M extends AbstractModel> {
+  public tagName: string;
+  public modelClass: DetachedModelConstructor<M>;
+
+  constructor(tagName: string, modelClass: DetachedModelConstructor<M>) {
+    this.tagName = tagName;
+    this.modelClass = modelClass;
+  }
+
+  public define(renderer: React.ComponentType<{state: Value<M>, setState: Dispatch<Value<M>>}>) {
+    const {tagName, modelClass} = this;
+
+    class ReactAdapterAutoElement extends ReactAdapterElement<Value<M>> {
+      static get modelClass() {
+        return modelClass;
+      }
+
+      protected initializeState(): Value<M> {
+        return (modelClass as unknown as {createEmptyValue(): Value<M>}).createEmptyValue();
+      }
+
+      protected render(): React.ReactNode {
+        const {state, setState} = this;
+        return createElement(renderer, {state, setState});
+      }
+    }
+
+    customElements.define(tagName, ReactAdapterAutoElement);
+
+    return ReactAdapterAutoElement;
   }
 }
