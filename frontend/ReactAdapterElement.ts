@@ -1,23 +1,33 @@
 import {createRoot, Root} from "react-dom/client";
 import React, {createElement, Dispatch, ReactNode, useReducer} from "react";
-import {AbstractModel, DetachedModelConstructor, Value} from "@hilla/form";
 
-function replaceStateReducer<T>(_: T, state: T) {
-  return state;
+function replaceReducer<T>(_: T, newValue: T): T {
+  return newValue;
 }
 
-export abstract class ReactAdapterElement<T = unknown> extends HTMLElement {
+function throwNotInitializedYet(): never {
+  throw new TypeError('Not inititialized yet');
+}
+
+const emptyAction: Dispatch<unknown> = () => {};
+
+export abstract class ReactAdapterElement<P = unknown, S = unknown> extends HTMLElement {
   #root: Root | undefined = undefined;
-  #state: T;
-  #dispatchState: (state: T) => void = () => {};
+  #rootRendered: boolean = false;
+
+  #props: P | undefined = undefined;
+  #propsInitialized: boolean = false;
+  #dispatchProps: Dispatch<P> = emptyAction;
+
+  #state: S | undefined = undefined;
+  #stateInitialized: boolean = false;
+  #dispatchState: Dispatch<S> = emptyAction;
+
   readonly #Wrapper: () => ReactNode;
   #unmountComplete = Promise.resolve();
 
-  protected abstract initializeState(): T;
-
   constructor() {
     super();
-    this.#state = this.initializeState();
     this.#Wrapper = this.#renderWrapper.bind(this);
     this.setState = this.setState.bind(this);
   }
@@ -25,7 +35,7 @@ export abstract class ReactAdapterElement<T = unknown> extends HTMLElement {
   public async connectedCallback() {
     await this.#unmountComplete;
     this.#root = createRoot(this);
-    this.#root.render(createElement(this.#Wrapper));
+    this.#maybeRenderRoot();
   }
 
   public async disconnectedCallback() {
@@ -33,28 +43,66 @@ export abstract class ReactAdapterElement<T = unknown> extends HTMLElement {
     await this.#unmountComplete;
     this.#root?.unmount();
     this.#root = undefined;
+    this.#rootRendered = false;
   }
 
-  protected get state(): T {
-    return this.#state;
+  protected get props(): P {
+    return this.#props!;
   }
 
-  protected set state(state: T) {
+  protected set props(props: P) {
+    this.#updateProps(props);
+    this.#maybeRenderRoot();
+  }
+
+  protected get state(): S {
+    return this.#state!;
+  }
+
+  protected set state(state: S) {
     this.#updateState(state, true);
+    this.#maybeRenderRoot();
   }
 
-  protected setState(state: T): void {
+  protected setState(state: S): void {
     this.#updateState(state);
   }
 
   protected abstract render(): ReactNode;
 
-  #updateState(state: T, skipEvent?: boolean): void {
-    if (state === this.#state) {
+  #maybeRenderRoot() {
+    if (this.#rootRendered || !this.#propsInitialized || !this.#stateInitialized || !this.#root) {
       return;
     }
 
+    this.#root.render(createElement(this.#Wrapper));
+    this.#rootRendered = true;
+  }
+
+  #updateProps(props: P): void {
+    const oldProps = this.#props;
+    this.#props = props;
+    if (!this.#propsInitialized) {
+      this.#propsInitialized = true;
+    }
+
+    if (props === oldProps) {
+      return;
+    }
+    this.#dispatchProps(props);
+  }
+
+  #updateState(state: S, skipEvent?: boolean): void {
+    const oldState = this.state;
     this.#state = state;
+    if (!this.#stateInitialized) {
+      this.#stateInitialized = true;
+    }
+
+    if (state === oldState) {
+      return;
+    }
+
     if (!skipEvent) {
       this.dispatchEvent(new CustomEvent('state-changed', {detail: state}));
     }
@@ -62,42 +110,12 @@ export abstract class ReactAdapterElement<T = unknown> extends HTMLElement {
   }
 
   #renderWrapper(): ReactNode {
-    const [state, dispatch] = useReducer(replaceStateReducer<T>, this.#state);
+    const [props, dispatchProps] = useReducer(replaceReducer<P>, this.#props!);
+    this.#props = this.props;
+    this.#dispatchProps = dispatchProps;
+    const [state, dispatchState] = useReducer(replaceReducer<S>, this.#state!);
     this.#state = state;
-    this.#dispatchState = dispatch;
+    this.#dispatchState = dispatchState;
     return this.render();
-  }
-}
-
-export class ReactAdapterStub<M extends AbstractModel> {
-  public tagName: string;
-  public modelClass: DetachedModelConstructor<M>;
-
-  constructor(tagName: string, modelClass: DetachedModelConstructor<M>) {
-    this.tagName = tagName;
-    this.modelClass = modelClass;
-  }
-
-  public define(renderer: React.ComponentType<{state: Value<M>, setState: Dispatch<Value<M>>}>) {
-    const {tagName, modelClass} = this;
-
-    class ReactAdapterAutoElement extends ReactAdapterElement<Value<M>> {
-      static get modelClass() {
-        return modelClass;
-      }
-
-      protected initializeState(): Value<M> {
-        return (modelClass as unknown as {createEmptyValue(): Value<M>}).createEmptyValue();
-      }
-
-      protected render(): React.ReactNode {
-        const {state, setState} = this;
-        return createElement(renderer, {state, setState});
-      }
-    }
-
-    customElements.define(tagName, ReactAdapterAutoElement);
-
-    return ReactAdapterAutoElement;
   }
 }
