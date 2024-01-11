@@ -11,6 +11,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import org.vaadin.example.mui.MuiRating;
+import org.vaadin.example.vaadin.ReactButton;
 
 /**
  * A sample Vaadin view class.
@@ -42,14 +44,14 @@ public class FlowView extends VerticalLayout {
     public FlowView(@Autowired GreetService service) {
         var colorPicker = new RgbaColorPicker();
         var colorPicker2 = new RgbaColorPicker();
-        colorPicker.addValueChangeListener(e -> {
-            Notification.show("Value now: " + e.getValue().toCssColor());
+        colorPicker.addColorChangeListener((color) -> {
+            Notification.show("Value now: " + color.toCssColor());
         });
         add(colorPicker);
 
 
-        colorPicker2.addValueChangeListener(e -> {
-            Notification.show("Value now: " + e.getValue().toCssColor());
+        colorPicker2.addColorChangeListener((color) -> {
+            Notification.show("Value now: " + color.toCssColor());
         });
         add(colorPicker2);
 
@@ -57,15 +59,21 @@ public class FlowView extends VerticalLayout {
         add(p);
         add(new HorizontalLayout(
                         new Button("Show value", e -> {
-                            p.setColor(colorPicker.getValue());
-                            p.setColor(colorPicker2.getValue());
+                            p.setColor(colorPicker.getColor());
+                            p.setColor(colorPicker2.getColor());
                         }),
                         new Button("Make green", e -> {
-                            colorPicker.setValue(new RgbaColor(0,255,0, 0.8));
-                            colorPicker2.setValue(new RgbaColor(0,255,0, 0.8));
+                            colorPicker.setColor(new RgbaColor(0,255,0, 0.8));
+                            colorPicker2.setColor(new RgbaColor(0,255,0, 0.8));
                         })
                 )
         );
+        add(new HorizontalLayout(
+                new ReactButton("Say hi", () -> {
+                    Notification.show("Hi custom event");
+                }),
+                new MuiRating()
+        ));
     }
 
 }

@@ -2,7 +2,7 @@ import { Button } from "@hilla/react-components/Button.js";
 import { Notification } from "@hilla/react-components/Notification.js";
 import { TextField } from "@hilla/react-components/TextField.js";
 import { HelloEndpoint } from "Frontend/generated/endpoints.js";
-import { useState } from "react";
+import {createElement, useState} from "react";
 import {VerticalLayout} from "@hilla/react-components/VerticalLayout.js";
 
 export default function HillaView() {

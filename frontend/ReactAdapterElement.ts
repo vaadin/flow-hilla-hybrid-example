@@ -1,35 +1,56 @@
 import {createRoot, Root} from "react-dom/client";
 import React, {createElement, Dispatch, ReactNode, useReducer} from "react";
 
-function replaceReducer<T>(_: T, newValue: T): T {
-  return newValue;
+type FlowStateKeyChangedAction<K extends string, V> = Readonly<{
+  type: 'stateKeyChanged',
+  key: K,
+  value: V,
+}>;
+
+type FlowStateReducerAction = FlowStateKeyChangedAction<string, unknown>;
+
+function stateReducer<S extends Readonly<Record<string, unknown>>>(state: S, action: FlowStateReducerAction): S {
+  switch (action.type) {
+    case "stateKeyChanged":
+      const {key, value} = action satisfies FlowStateKeyChangedAction<string, unknown>;
+      return {
+        ...state,
+        key: value
+      } as S;
+  }
 }
 
-function throwNotInitializedYet(): never {
-  throw new TypeError('Not inititialized yet');
-}
+type DispatchEvent<T> = T extends undefined
+  ? () => boolean
+  : { dispatch(value: T): boolean }["dispatch"];
 
 const emptyAction: Dispatch<unknown> = () => {};
 
-export abstract class ReactAdapterElement<P = unknown, S = unknown> extends HTMLElement {
+type RenderHooks = Readonly<{
+  useState<T>(key: string, initialValue?: T): [value: T, setValue: Dispatch<T>];
+  useCustomEvent<T = undefined>(type: string, options?: CustomEventInit<T>): DispatchEvent<T>;
+}>;
+
+export abstract class ReactAdapterElement extends HTMLElement {
   #root: Root | undefined = undefined;
   #rootRendered: boolean = false;
 
-  #props: P | undefined = undefined;
-  #propsInitialized: boolean = false;
-  #dispatchProps: Dispatch<P> = emptyAction;
-
-  #state: S | undefined = undefined;
-  #stateInitialized: boolean = false;
-  #dispatchState: Dispatch<S> = emptyAction;
+  #state: Record<string, unknown> = Object.create(null);
+  #stateSetters = new Map<string, Dispatch<unknown>>();
+  #customEvents = new Map<string, DispatchEvent<unknown>>();
+  #dispatchFlowState: Dispatch<FlowStateReducerAction> = emptyAction;
+  #renderHooks: RenderHooks;
 
   readonly #Wrapper: () => ReactNode;
   #unmountComplete = Promise.resolve();
 
   constructor() {
     super();
+    this.#renderHooks = {
+      useState: this.useState.bind(this),
+      useCustomEvent: this.useCustomEvent.bind(this)
+    };
     this.#Wrapper = this.#renderWrapper.bind(this);
-    this.setState = this.setState.bind(this);
   }
 
   public async connectedCallback() {
@@ -46,32 +67,53 @@ export abstract class ReactAdapterElement<P = unknown, S = unknown> extends HTML
     this.#rootRendered = false;
   }
 
-  protected get props(): P {
-    return this.#props!;
+  protected useState<T>(key: string, initialValue?: T): [value: T, setValue: Dispatch<T>] {
+    if (!this.#stateSetters.has(key)) {
+      const value = ((this as Record<string, unknown>)[key] as T) ?? initialValue!;
+      this.#state[key] = value;
+      Object.defineProperty(this, key, {
+        enumerable: true,
+        get(): T {
+          return this.#state[key];
+        },
+        set(nextValue: T) {
+          this.#state[key] = nextValue;
+          this.#dispatchFlowState({type: 'stateKeyChanged', key, value});
+        }
+      });
+
+      const dispatchChangedEvent = this.useCustomEvent<{value: T}>(`${key}-changed`, {detail: {value}});
+      const setValue = (value: T) => {
+        this.#state[key] = value;
+        dispatchChangedEvent({value});
+        this.#dispatchFlowState({type: 'stateKeyChanged', key, value});
+      };
+      this.#stateSetters.set(key, setValue as Dispatch<unknown>);
+      return [value, setValue];
+    }
+    return [this.#state[key] as T, this.#stateSetters.get(key)!];
   }
 
-  protected set props(props: P) {
-    this.#updateProps(props);
-    this.#maybeRenderRoot();
+  protected useCustomEvent<T = undefined>(type: string, options: CustomEventInit<T> = {}): DispatchEvent<T> {
+    if (!this.#customEvents.has(type)) {
+      const dispatch = ((detail?: T) => {
+        const eventInitDict = "detail" in options ? {
+          ...options,
+          detail
+        } : options;
+        const event = new CustomEvent(type, eventInitDict);
+        return this.dispatchEvent(event);
+      }) as DispatchEvent<T>;
+      this.#customEvents.set(type, dispatch);
+      return dispatch;
+    }
+    return this.#customEvents.get(type)! as DispatchEvent<T>;
   }
 
-  protected get state(): S {
-    return this.#state!;
-  }
-
-  protected set state(state: S) {
-    this.#updateState(state, true);
-    this.#maybeRenderRoot();
-  }
-
-  protected setState(state: S): void {
-    this.#updateState(state);
-  }
-
-  protected abstract render(): ReactNode;
+  protected abstract render(hooks: RenderHooks): ReactNode;
 
   #maybeRenderRoot() {
-    if (this.#rootRendered || !this.#propsInitialized || !this.#stateInitialized || !this.#root) {
+    if (this.#rootRendered || !this.#root) {
       return;
     }
 
@@ -79,43 +121,10 @@ export abstract class ReactAdapterElement<P = unknown, S = unknown> extends HTML
     this.#rootRendered = true;
   }
 
-  #updateProps(props: P): void {
-    const oldProps = this.#props;
-    this.#props = props;
-    if (!this.#propsInitialized) {
-      this.#propsInitialized = true;
-    }
-
-    if (props === oldProps) {
-      return;
-    }
-    this.#dispatchProps(props);
-  }
-
-  #updateState(state: S, skipEvent?: boolean): void {
-    const oldState = this.state;
-    this.#state = state;
-    if (!this.#stateInitialized) {
-      this.#stateInitialized = true;
-    }
-
-    if (state === oldState) {
-      return;
-    }
-
-    if (!skipEvent) {
-      this.dispatchEvent(new CustomEvent('state-changed', {detail: state}));
-    }
-    this.#dispatchState(state);
-  }
-
   #renderWrapper(): ReactNode {
-    const [props, dispatchProps] = useReducer(replaceReducer<P>, this.#props!);
-    this.#props = this.props;
-    this.#dispatchProps = dispatchProps;
-    const [state, dispatchState] = useReducer(replaceReducer<S>, this.#state!);
+    const [state, dispatchFlowState] = useReducer(stateReducer, this.#state);
     this.#state = state;
-    this.#dispatchState = dispatchState;
-    return this.render();
+    this.#dispatchFlowState = dispatchFlowState;
+    return this.render(this.#renderHooks);
   }
 }

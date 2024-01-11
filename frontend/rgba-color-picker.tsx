@@ -1,21 +1,17 @@
 import React, {
   type ReactNode,
 } from 'react';
-import {RgbaColorPicker} from "react-colorful";
+import {RgbaColor, RgbaColorPicker} from "react-colorful";
 import {
   ReactAdapterElement
 } from "Frontend/ReactAdapterElement";
-import RgbaColor
-  from "Frontend/generated/org/vaadin/example/colorful/RgbaColor";
-import RgbaColorPickerHTMLAttributes
-  from "Frontend/generated/org/vaadin/example/colorful/RgbaColorPickerHTMLAttributes";
 
-class RgbaColorPickerElement extends ReactAdapterElement<RgbaColorPickerHTMLAttributes, RgbaColor | undefined> {
+class RgbaColorPickerElement extends ReactAdapterElement {
   protected override render(): ReactNode {
+    const [color, setColor] = this.useState<RgbaColor>("color");
     return <RgbaColorPicker
-      color={this.state}
-      onChange={this.setState}
-      {...this.props}
+      color={color}
+      onChange={setColor}
     />;
   }
 }
