@@ -8,7 +8,9 @@ import {
 
 class RgbaColorPickerElement extends ReactAdapterElement {
   protected override render(): ReactNode {
-    const [color, setColor] = this.useState<RgbaColor>("color");
+    const [color, setColor] =
+      this.useState<RgbaColor>("color");
+
     return <RgbaColorPicker
       color={color}
       onChange={setColor}
@@ -16,4 +18,7 @@ class RgbaColorPickerElement extends ReactAdapterElement {
   }
 }
 
-customElements.define("rgba-color-picker", RgbaColorPickerElement);
+customElements.define(
+  "rgba-color-picker",
+  RgbaColorPickerElement
+);

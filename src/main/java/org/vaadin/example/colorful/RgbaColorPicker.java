@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 public class RgbaColorPicker extends ReactAdapterComponent {
 
     public RgbaColorPicker() {
+
         setColor(new RgbaColor(255, 0, 0, 0.5));
     }
 

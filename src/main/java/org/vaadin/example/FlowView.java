@@ -13,6 +13,11 @@ import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import org.vaadin.example.mui.MuiRating;
 import org.vaadin.example.vaadin.ReactButton;
+import org.vaadin.example.vaadin.ReactGrid;
+import org.vaadin.example.vaadin.ReactLazyGrid;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * A sample Vaadin view class.
@@ -74,6 +79,11 @@ public class FlowView extends VerticalLayout {
                 }),
                 new MuiRating()
         ));
+        var list = IntStream.range(0, 300).mapToObj((i) -> new GridItem("User " + i, "u" + i + "@example.com")).toList();
+        add(new ReactGrid<>(list));
+        add(new ReactLazyGrid<>(list));
     }
 
+    public record GridItem(String name, String email) {
+    }
 }

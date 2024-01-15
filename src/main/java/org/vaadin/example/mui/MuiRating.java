@@ -14,7 +14,7 @@ import java.util.function.DoubleConsumer;
 @Tag("mui-rating")
 public class MuiRating extends ReactAdapterComponent {
     public MuiRating() {
-        setRating(0);
+        setRating(-1);
     }
 
     public double getRating() {
