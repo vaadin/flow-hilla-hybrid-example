@@ -1,5 +1,4 @@
 import { Button } from "@hilla/react-components/Button.js";
-import { Notification } from "@hilla/react-components/Notification.js";
 import { TextField } from "@hilla/react-components/TextField.js";
 import { HelloEndpoint } from "Frontend/generated/endpoints.js";
 import { useState } from "react";
@@ -7,6 +6,8 @@ import {VerticalLayout} from "@hilla/react-components/VerticalLayout.js";
 
 export default function HillaView() {
   const [name, setName] = useState("");
+  const [notifications, setNotifications] = useState([] as string[]);
+
 
   return (
     <>
@@ -21,9 +22,12 @@ export default function HillaView() {
             <Button
                 onClick={async () => {
                     const serverResponse = await HelloEndpoint.sayHello(name);
-                    Notification.show(serverResponse);
+                    setNotifications(notifications.concat(serverResponse));
                 }}
             > Say hello </Button>
+                {notifications.map((notification, index) => (
+                    <p key={index}>{notification}</p>
+                ))}
         </VerticalLayout>
     </>
   );
