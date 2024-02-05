@@ -1,5 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
-import {VerticalLayout} from "@hilla/react-components/VerticalLayout.js";
+import { Button } from "@vaadin/react-components/Button.js";
+import { TextField } from "@vaadin/react-components/TextField.js";
+import { HelloEndpoint } from "Frontend/generated/endpoints.js";
+import { useState } from "react";
+import {VerticalLayout} from "@vaadin/react-components/VerticalLayout.js";
 
 let comp;
 
@@ -9,41 +12,31 @@ function MyLoginView() {
 }
 
 export default function HillaView() {
+  const [name, setName] = useState("");
+  const [notifications, setNotifications] = useState([] as string[]);
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = '/web-component/my-flow-component.js';
-        document.head.appendChild(script);
 
-        return () => {
-            // const flowElement = document.querySelector('my-flow-component');
-            //
-            // // Check if the element exists before attempting to remove it
-            // if (flowElement) {
-            //     // Remove the element
-            //     flowElement.parentNode?.removeChild(flowElement);
-            // }
-            //
-            // // @ts-ignore
-            // var clients = window.Vaadin?.Flow?.clients;
-            // if (clients) {
-            //     var exportedWcClient = Object.keys(clients)
-            //         .filter((key) => key.startsWith("wc-"));
-            //     if (exportedWcClient && exportedWcClient.length > 0) {
-            //         var key = exportedWcClient[0];
-            //         // @ts-ignore
-            //         delete window.Vaadin.Flow.clients[key];
-            //     }
-            // }
-        };
-    }, []);
-
-    return (
-        <>
-            <VerticalLayout className={'centered-content'}>
-                <h3>Hilla View</h3>
-                <MyLoginView/>
-            </VerticalLayout>
-        </>
-    );
+  return (
+    <>
+        <VerticalLayout className={'centered-content'}>
+            <MyLoginView/>
+            <h3>Hilla View</h3>
+            <TextField
+                label="Your name"
+                onValueChanged={(e) => {
+                    setName(e.detail.value);
+                }}
+            />
+            <Button
+                onClick={async () => {
+                    const serverResponse = await HelloEndpoint.sayHello(name);
+                    setNotifications(notifications.concat(serverResponse));
+                }}
+            > Say hello </Button>
+                {notifications.map((notification, index) => (
+                    <p key={index}>{notification}</p>
+                ))}
+        </VerticalLayout>
+    </>
+  );
 }
