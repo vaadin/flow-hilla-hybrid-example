@@ -3,12 +3,12 @@ import { TextField } from "@vaadin/react-components/TextField.js";
 import { HelloEndpoint } from "Frontend/generated/endpoints.js";
 import { useState } from "react";
 import {VerticalLayout} from "@vaadin/react-components/VerticalLayout.js";
+import { createWebComponent } from "Frontend/generated/flow/Flow";
 
 let comp;
 
 function MyLoginView() {
-    comp = React.createElement("my-flow-component");
-    return comp;
+    return createWebComponent("my-flow-component");
 }
 
 export default function HillaView() {
