@@ -11,7 +11,7 @@ export default function HillaView() {
 
   return (
     <>
-        <VerticalLayout className={'centered-content'}>
+        <VerticalLayout theme="padding spacing">
             <h3>Hilla View</h3>
             <TextField
                 label="Your name"

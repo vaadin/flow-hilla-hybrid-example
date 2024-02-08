@@ -45,11 +45,7 @@ public class FlowView extends VerticalLayout {
             add(new Paragraph(service.greet(textField.getValue())));
         });
 
-        // Use custom CSS classes to apply styling. This is defined in
-        // styles.css.
-        addClassName("centered-content");
-
-        add( new H3("Flow View"), textField, button);
+        add(new H3("Flow View"), textField, button);
     }
 
 }

@@ -4,12 +4,6 @@
    Visit https://vaadin.com/docs/styling/application-theme/ for more information.
 */
 
-/* Example: CSS class name to center align the content . */
-.centered-content {
-  margin: 0 auto;
-  max-width: 250px;
-}
-
 /* Example: the style is applied only to the textfields which have the `bordered` class name. */
 vaadin-text-field.bordered::part(input-field) {
   box-shadow: inset 0 0 0 1px var(--lumo-contrast-30pct);
