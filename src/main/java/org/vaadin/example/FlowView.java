@@ -1,7 +1,6 @@
 package org.vaadin.example;
 
 import com.vaadin.flow.component.html.H3;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -35,7 +34,7 @@ public class FlowView extends VerticalLayout {
      *            The message service. Automatically injected Spring managed
      *            bean.
      */
-    public FlowView(@Autowired GreetService service) {
+    public FlowView(GreetService service) {
 
         // Use TextField for standard text input
         TextField textField = new TextField("Your name");
