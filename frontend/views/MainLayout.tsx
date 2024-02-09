@@ -14,30 +14,26 @@ export default function MainLayout() {
 
     useEffect(() => {document.title = currentTitle;}, [currentTitle]);
 
-    return (
-        <AppLayout primarySection="drawer">
-            <div slot="drawer" className="flex flex-col justify-between h-full p-m">
-                <header className="flex flex-col gap-m">
-                    <h1 className="text-l m-0">Hybrid example</h1>
-                    <nav>
-                        <NavLink className={navLinkClasses} to="/">
-                            About
-                        </NavLink>
-                        <NavLink className={navLinkClasses} to="/hilla">
-                            Hilla
-                        </NavLink>
-                        <NavLink to={'/flow'} className={navLinkClasses}>
-                            Flow
-                        </NavLink>
-                    </nav>
-                </header>
-            </div>
+  return (
 
-            <DrawerToggle slot="navbar" aria-label="Menu toggle"></DrawerToggle>
+    <AppLayout primarySection="drawer">
+      <div slot="drawer" className="flex flex-col justify-between h-full p-m">
+        <header className="flex flex-col gap-m">
+          <h1 className="text-l m-0">Hybrid example</h1>
+          <nav>
+            <NavLink className={navLinkClasses} to="/">About</NavLink>
+            <NavLink className={navLinkClasses} to="/hilla">Hilla</NavLink>
+            <NavLink to={'/flow'} className={navLinkClasses}>Flow</NavLink>
+          </nav>
+        </header>
+      </div>
 
-            <Suspense fallback={<Placeholder />}>
-                <Outlet />
-            </Suspense>
-        </AppLayout>
-    );
+      <DrawerToggle slot="navbar" aria-label="Menu toggle"></DrawerToggle>
+
+      <Suspense fallback={<Placeholder />}>
+        <Outlet />
+      </Suspense>
+    </AppLayout>
+
+  );
 }
