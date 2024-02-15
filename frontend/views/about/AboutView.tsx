@@ -6,12 +6,11 @@ export default function AboutView() {
     return (
         <VerticalLayout theme="padding spacing">
             <h3>About View</h3>
-            <p>This is a simplified example on how to mix:
-                <ul>
-                    <li>Hilla with React</li>
-                    <li>Flow in pure Java</li>
-                </ul>
-            </p>
+            <p>This is a simplified example on how to mix:</p>
+            <ul>
+                <li>Hilla with React</li>
+                <li>Flow in pure Java</li>
+            </ul>
         </VerticalLayout>
     );
 }
