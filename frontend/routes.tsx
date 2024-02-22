@@ -17,5 +17,5 @@ export const routes = [
 ] as RouteObject[];
 
 
-export const router = createBrowserRouter([...routes], {basename: new URL(document.baseURI).pathname });
+export default createBrowserRouter([...routes], {basename: new URL(document.baseURI).pathname });
 
