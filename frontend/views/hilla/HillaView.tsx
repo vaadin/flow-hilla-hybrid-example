@@ -1,6 +1,6 @@
 import { Button } from "@vaadin/react-components/Button.js";
 import { TextField } from "@vaadin/react-components/TextField.js";
-import { HelloEndpoint } from "Frontend/generated/endpoints.js";
+import { HelloEndpoint } from "Frontend/generated/endpoints";
 import { useState } from "react";
 import {VerticalLayout} from "@vaadin/react-components/VerticalLayout.js";
 
