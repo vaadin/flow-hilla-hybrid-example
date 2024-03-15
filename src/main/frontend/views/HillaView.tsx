@@ -4,15 +4,17 @@ import { HelloEndpoint } from "Frontend/generated/endpoints";
 import { useState } from "react";
 import {VerticalLayout} from "@vaadin/react-components/VerticalLayout.js";
 
+/**
+ * Hilla view that allows access only for users with a role 'USER'
+ */
 export default function HillaView() {
   const [name, setName] = useState("");
   const [notifications, setNotifications] = useState([] as string[]);
 
-
   return (
     <>
         <VerticalLayout theme="padding spacing">
-            <h3>Hilla View</h3>
+            <h3>Hilla User View</h3>
             <TextField
                 label="Your name"
                 onValueChanged={(e) => {

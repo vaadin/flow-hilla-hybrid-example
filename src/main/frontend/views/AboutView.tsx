@@ -1,15 +1,12 @@
 import { VerticalLayout } from "@vaadin/react-components/VerticalLayout.js";
 
-
+/**
+ * Hilla views that allows access only for authenticated users.
+ */
 export default function AboutView() {
-
     return (
         <VerticalLayout theme="padding">
-            <p>This project is a simplified example on how to mix:</p>
-            <ul>
-                <li>Hilla with React</li>
-                <li>Flow in pure Java</li>
-            </ul>
+            <p>This is a Hilla view available for authenticated users.</p>
         </VerticalLayout>
     );
 }
