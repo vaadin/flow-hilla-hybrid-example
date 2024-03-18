@@ -4,9 +4,8 @@ import { Button } from '@vaadin/react-components/Button.js';
 import { DrawerToggle } from '@vaadin/react-components/DrawerToggle.js';
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
 import { useRouteMetadata } from 'Frontend/util/routing.js';
-import {Suspense, useContext, useEffect} from 'react';
+import {Suspense, useEffect} from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import {AuthContext} from "@vaadin/hilla-react-auth";
 import {useAuth} from "../auth";
 
 const navLinkClasses = ({ isActive }: any) => {
@@ -18,12 +17,10 @@ export default function MainLayout() {
 
     useEffect(() => {document.title = currentTitle;}, [currentTitle]);
 
-    const { state } = useContext(AuthContext);
-
-    const {logout} = useAuth();
+    const { state, logout } = useAuth();
 
     // @ts-ignore
-    const user : string = state.user?.name;
+    const userName : string = state.user?.name;
 
     return (
         <AppLayout primarySection="drawer">
@@ -34,23 +31,29 @@ export default function MainLayout() {
                         <NavLink className={navLinkClasses} to="/">
                             Hilla Public
                         </NavLink>
-                        <NavLink className={navLinkClasses} to="/about">
-                            Hilla Authenticated
-                        </NavLink>
-                        <NavLink className={navLinkClasses} to="/hilla">
-                            Hilla User
-                        </NavLink>
-                        <NavLink to={'/flow'} className={navLinkClasses}>
-                            Flow Admin
-                        </NavLink>
+                        {state.user ? (
+                            <NavLink className={navLinkClasses} to="/about">
+                                Hilla Authenticated
+                            </NavLink>
+                        ) : null}
+                        {state.user ? (
+                            <NavLink className={navLinkClasses} to="/hilla">
+                                Hilla User
+                            </NavLink>
+                        ) : null}
+                        {state.user ? (
+                            <NavLink to={'/flow'} className={navLinkClasses}>
+                                Flow Admin
+                            </NavLink>
+                        ) : null}
                     </nav>
                 </header>
                 <footer className="flex flex-col gap-s">
                     {state.user ? (
                         <>
                             <div className="flex items-center gap-s">
-                                <Avatar theme="xsmall" name={user} />
-                                {user}
+                                <Avatar theme="xsmall" name={userName} />
+                                {userName}
                             </div>
                             <Button onClick={async () => logout()}>Sign out</Button>
                         </>
