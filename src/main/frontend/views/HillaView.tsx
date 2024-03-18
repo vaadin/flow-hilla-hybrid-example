@@ -22,6 +22,7 @@ export default function HillaView() {
                 }}
             />
             <Button
+                id={'say-hello'}
                 onClick={async () => {
                     const serverResponse = await HelloEndpoint.sayHello(name);
                     setNotifications(notifications.concat(serverResponse));

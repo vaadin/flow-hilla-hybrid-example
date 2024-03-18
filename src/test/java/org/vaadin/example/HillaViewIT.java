@@ -6,4 +6,9 @@ public class HillaViewIT extends FlowViewIT {
         return "/hilla";
     }
 
+    @Override
+    protected void login() {
+        login("user", "user");
+    }
+
 }

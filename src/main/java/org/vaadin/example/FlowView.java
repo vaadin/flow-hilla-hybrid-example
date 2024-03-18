@@ -26,6 +26,7 @@ public class FlowView extends VerticalLayout {
         Button button = new Button("Say hello", e -> {
             add(new Paragraph(service.greet(textField.getValue())));
         });
+        button.setId("say-hello");
 
         add(new H3("Flow Admin View"), textField, button);
     }
