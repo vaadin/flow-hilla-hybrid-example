@@ -66,22 +66,22 @@ You can find more information at [Live Reload in Spring Boot Applications](https
 
 Vaadin web applications are full-stack and include both client-side and server-side code in the same project.
 
-| Directory                                                        | Description                        |
-|:-----------------------------------------------------------------|:-----------------------------------|
-| `src/main/frontend/`                                             | Client-side source directory       |
-| &nbsp;&nbsp;&nbsp;&nbsp;`components/`                            | React components                   |
-| &nbsp;&nbsp;&nbsp;&nbsp;`themes/`                                | Application theme sources          |
-| &nbsp;&nbsp;&nbsp;&nbsp;`util/`                                  | Util scripts                       |
-| &nbsp;&nbsp;&nbsp;&nbsp;`views/`                                 | UI views in React/TypeScript       |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`MainLayout.tsx` | Layout/Menu for other views        |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`PublicView.tsx` | Public Hilla view                  |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`AboutView.tsx`  | Hilla view for authenticated users |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`HillaView.tsx`  | Hilla view for 'USER'              |
-| &nbsp;&nbsp;&nbsp;&nbsp;`index.html`                             | HTML template                      |
-| &nbsp;&nbsp;&nbsp;&nbsp;`auth.tsx`                               | Authentication helpers             |
-| &nbsp;&nbsp;&nbsp;&nbsp;`index.tsx`                              | Application TS entry point         |
-| &nbsp;&nbsp;&nbsp;&nbsp;`routes.tsx`                             | React Router configuration         |
-| `src/main/java/<groupId>/`                                       | Server-side source directory       |
-| &nbsp;&nbsp;&nbsp;&nbsp;`Application.java`                       | Server entrypoint                  |
-| &nbsp;&nbsp;&nbsp;&nbsp;`FlowView.java`                          | Server-side view for 'ADMIN'       |
-| &nbsp;&nbsp;&nbsp;&nbsp;`GreetService.java`                      | Back-end service example           |
+| Directory                                                     | Description                        |
+|:--------------------------------------------------------------|:-----------------------------------|
+| `src/main/frontend/`                                          | Client-side source directory       |
+| &nbsp;&nbsp;&nbsp;&nbsp;`components/`                         | React components                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;`themes/`                             | Application theme sources          |
+| &nbsp;&nbsp;&nbsp;&nbsp;`util/`                               | Util scripts                       |
+| &nbsp;&nbsp;&nbsp;&nbsp;`views/`                              | UI views in React/TypeScript       |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$layout.tsx` | Layout/Menu for other views        |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index.tsx`   | Public Hilla view                  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`about.tsx`   | Hilla view for authenticated users |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`hilla.tsx`   | Hilla view for 'USER'              |
+| &nbsp;&nbsp;&nbsp;&nbsp;`index.html`                          | HTML template                      |
+| &nbsp;&nbsp;&nbsp;&nbsp;`auth.tsx`                            | Authentication helpers             |
+| &nbsp;&nbsp;&nbsp;&nbsp;`index.tsx`                           | Application TS entry point         |
+| &nbsp;&nbsp;&nbsp;&nbsp;`routes.tsx`                          | React Router configuration         |
+| `src/main/java/<groupId>/`                                    | Server-side source directory       |
+| &nbsp;&nbsp;&nbsp;&nbsp;`Application.java`                    | Server entrypoint                  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`FlowView.java`                       | Server-side view for 'ADMIN'       |
+| &nbsp;&nbsp;&nbsp;&nbsp;`GreetService.java`                   | Back-end service example           |

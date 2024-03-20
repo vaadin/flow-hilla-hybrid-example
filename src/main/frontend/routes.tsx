@@ -1,23 +1,23 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import { buildRoute } from "Frontend/generated/flow/Flow";
-import MainLayout from "Frontend/views/MainLayout";
-import HillaView from "Frontend/views/HillaView";
-import AboutView from "Frontend/views/AboutView";
-import LoginView from "Frontend/views/LoginView";
+import Layout from "Frontend/views/$layout";
+import Hilla from "Frontend/views/hilla";
+import About from "Frontend/views/about";
+import Login from "Frontend/views/login";
 import {protectRoutes} from "@vaadin/hilla-react-auth";
-import PublicView from "Frontend/views/PublicView";
+import Public from "Frontend/views/$index";
 
 let routing = protectRoutes([
     {
-        element: <MainLayout />,
+        element: <Layout />,
         handle: { title: 'Main' },
         children: [
-            { path: '/', element: <PublicView />, handle: { title: 'Public', requiresLogin: false } },
-            { path: '/about', element: <AboutView />, handle: { title: 'Welcome', requiresLogin: true } },
-            { path: '/hilla', element: <HillaView />, handle: { title: 'Hilla', rolesAllowed: ['ROLE_USER'] } }
+            { path: '/', element: <Public />, handle: { title: 'Public', requiresLogin: false } },
+            { path: '/about', element: <About />, handle: { title: 'Welcome', requiresLogin: true } },
+            { path: '/hilla', element: <Hilla />, handle: { title: 'Hilla', rolesAllowed: ['ROLE_USER'] } }
         ],
     },
-    { path: '/login', element: <LoginView />, handle: { title: 'Login' } }
+    { path: '/login', element: <Login />, handle: { title: 'Login' } }
 ]) as RouteObject[];
 export const routes = buildRoute(routing, routing[0].children);
 

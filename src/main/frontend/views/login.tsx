@@ -6,7 +6,7 @@ import { useAuth } from 'Frontend/auth';
 /**
  * Login views in Hilla
  */
-export default function LoginView() {
+export default function Login() {
     const { state, login } = useAuth();
     const [hasError, setError] = useState<boolean>();
     const [url, setUrl] = useState<string>();
@@ -22,7 +22,7 @@ export default function LoginView() {
             error={hasError}
             noForgotPassword
             title={'Hybrid App with Stateful Auth'}
-            description={'User: user/user, Superuser: admin/admin'}
+            description={'User: user/user, Admin: admin/admin'}
             onLogin={async ({ detail: { username, password } }) => {
                 const { defaultUrl, error, redirectUrl } = await login(username, password);
 

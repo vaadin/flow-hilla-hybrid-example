@@ -12,7 +12,7 @@ const navLinkClasses = ({ isActive }: any) => {
     return `block rounded-m p-s ${isActive ? 'bg-primary-10 text-primary' : 'text-body'}`;
 };
 
-export default function MainLayout() {
+export default function Layout() {
     const currentTitle = useRouteMetadata()?.title ?? 'Hybrid Example With Stateful Auth';
 
     useEffect(() => {document.title = currentTitle;}, [currentTitle]);
@@ -21,6 +21,15 @@ export default function MainLayout() {
 
     // @ts-ignore
     const userName : string = state.user?.name;
+
+    async function doLogout() {
+        const isServerSideRoute = window.location.pathname === '/flow';
+        await logout();
+        if (isServerSideRoute) {
+            // Workaround for https://github.com/vaadin/hilla/issues/2235
+            window.location.reload();
+        }
+    }
 
     return (
         <AppLayout primarySection="drawer">
@@ -55,7 +64,7 @@ export default function MainLayout() {
                                 <Avatar theme="xsmall" name={userName} />
                                 {userName}
                             </div>
-                            <Button onClick={async () => logout()}>Sign out</Button>
+                            <Button onClick={async () => doLogout()}>Sign out</Button>
                         </>
                     ) : (
                         <a href="/login">Sign in</a>

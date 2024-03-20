@@ -7,7 +7,7 @@ import {VerticalLayout} from "@vaadin/react-components/VerticalLayout.js";
 /**
  * Hilla view that allows access only for users with a role 'USER'
  */
-export default function HillaView() {
+export default function Hilla() {
   const [name, setName] = useState("");
   const [notifications, setNotifications] = useState([] as string[]);
 
