@@ -1,13 +1,13 @@
 package org.vaadin.example.endpoints;
 
+import jakarta.annotation.security.PermitAll;
 import org.vaadin.example.GreetService;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 import com.vaadin.hilla.Nonnull;
 
 @Endpoint
-@AnonymousAllowed
+@PermitAll
 public class HelloEndpoint {
 
     GreetService service = new GreetService();
