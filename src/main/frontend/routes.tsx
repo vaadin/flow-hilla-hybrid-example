@@ -28,19 +28,17 @@
  * exists in the frontend folder (not in generated folder) and you copied the file,
  * as the import isn't updated automatically by Vaadin in this case.
  ******************************************************************************/
-import  Flow  from 'Frontend/generated/flow/Flow';
+import Flow from 'Frontend/generated/flow/Flow';
 import { serverSideRoutes } from 'Frontend/generated/flow/Flow';
 import fileRoutes from 'Frontend/generated/views';
 import Login from "Frontend/views/login";
 import {RouterBuilder} from "@vaadin/hilla-file-router/runtime.js";
 
-
 const routerBuilder = new RouterBuilder()
     .withFileRoutes(fileRoutes)
     .withReactRoutes(
-        { path: '/login', element: <Login />, handle: { title: 'Login' } },
+        { path: '/login', element: <Login />, handle: { title: 'Login' } }
     )
-    // @ts-ignore
     .withServerRoutes(Flow)
     .protect('/login');
 
