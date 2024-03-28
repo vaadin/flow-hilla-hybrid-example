@@ -12,9 +12,9 @@ let routing = protectRoutes([
         element: <Layout />,
         handle: { title: 'Main' },
         children: [
-            { path: '/', element: <Public />, handle: { title: 'Public', requiresLogin: false } },
-            { path: '/about', element: <About />, handle: { title: 'Welcome', requiresLogin: true } },
-            { path: '/hilla', element: <Hilla />, handle: { title: 'Hilla', rolesAllowed: ['ROLE_USER'] } }
+            { path: '/', element: <Public />, handle: { title: 'Public' } },
+            { path: '/about', element: <About />, handle: { title: 'Welcome' } },
+            { path: '/hilla', element: <Hilla />, handle: { title: 'Hilla' } }
         ],
     },
     { path: '/login', element: <Login />, handle: { title: 'Login' } }

@@ -4,6 +4,13 @@ import { HelloEndpoint } from "Frontend/generated/endpoints";
 import { useState } from "react";
 import {VerticalLayout} from "@vaadin/react-components/VerticalLayout.js";
 
+import type {ViewConfig} from "@vaadin/hilla-file-router/types.js";
+
+export const config: ViewConfig = {
+    loginRequired: true,
+    rolesAllowed: ['ROLE_USER'],
+};
+
 /**
  * Hilla view that allows access only for users with a role 'USER'
  */
