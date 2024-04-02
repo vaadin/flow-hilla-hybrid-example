@@ -31,11 +31,11 @@
     "react-router-dom": "6.22.3"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7",
+    "@babel/preset-react": "7.24.1",
     "@rollup/plugin-replace": "5.0.5",
     "@rollup/pluginutils": "5.1.0",
-    "@types/react": "18.2.64",
-    "@types/react-dom": "18.2.21",
+    "@types/react": "18.2.67",
+    "@types/react-dom": "18.2.22",
     "@vaadin/hilla-generator-cli": "24.4.0-alpha15",
     "@vaadin/hilla-generator-core": "24.4.0-alpha15",
     "@vaadin/hilla-generator-plugin-backbone": "24.4.0-alpha15",
@@ -52,8 +52,8 @@
     "rollup-plugin-visualizer": "5.12.0",
     "strip-css-comments": "5.0.0",
     "transform-ast": "2.4.4",
-    "typescript": "5.4.2",
-    "vite": "5.1.6",
+    "typescript": "5.4.3",
+    "vite": "5.2.6",
     "vite-plugin-checker": "0.6.4",
     "workbox-build": "7.0.0",
     "workbox-core": "7.0.0",
@@ -89,11 +89,11 @@
       "react-router-dom": "6.22.3"
     },
     "devDependencies": {
-      "@babel/preset-react": "^7",
+      "@babel/preset-react": "7.24.1",
       "@rollup/plugin-replace": "5.0.5",
       "@rollup/pluginutils": "5.1.0",
-      "@types/react": "18.2.64",
-      "@types/react-dom": "18.2.21",
+      "@types/react": "18.2.67",
+      "@types/react-dom": "18.2.22",
       "@vaadin/hilla-generator-cli": "24.4.0-alpha15",
       "@vaadin/hilla-generator-core": "24.4.0-alpha15",
       "@vaadin/hilla-generator-plugin-backbone": "24.4.0-alpha15",
@@ -110,14 +110,14 @@
       "rollup-plugin-visualizer": "5.12.0",
       "strip-css-comments": "5.0.0",
       "transform-ast": "2.4.4",
-      "typescript": "5.4.2",
-      "vite": "5.1.6",
+      "typescript": "5.4.3",
+      "vite": "5.2.6",
       "vite-plugin-checker": "0.6.4",
       "workbox-build": "7.0.0",
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "14b0af69cef053b610020cef2a642f6cf5c00c7f758fbfadeea64a7c93c65d5b"
+    "hash": "872101516293142e6d1e74c9fadd1c70bd5a8d9640e69dabd0d509196414f179"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",

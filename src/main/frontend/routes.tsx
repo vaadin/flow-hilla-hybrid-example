@@ -1,5 +1,5 @@
-import { createBrowserRouter, RouteObject } from 'react-router-dom';
-import { buildRoute } from "Frontend/generated/flow/Flow";
+import { RouteObject } from 'react-router-dom';
+import { buildRoute as b, createRouter } from "Frontend/Flow";
 import Layout from "Frontend/views/$layout";
 import Hilla from "Frontend/views/hilla";
 import About from "Frontend/views/about";
@@ -19,6 +19,6 @@ let routing = protectRoutes([
     },
     { path: '/login', element: <Login />, handle: { title: 'Login' } }
 ]) as RouteObject[];
-export const routes = buildRoute(routing, routing[0].children);
+export const routes = b(routing, routing[0].children);
 
-export default createBrowserRouter(routes);
+export default createRouter(routes);
