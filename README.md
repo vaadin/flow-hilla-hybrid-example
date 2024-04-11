@@ -47,8 +47,8 @@ Vaadin web applications are full-stack and include both client-side and server-s
 | &nbsp;&nbsp;&nbsp;&nbsp;`themes/`                             | Application theme sources          |
 | &nbsp;&nbsp;&nbsp;&nbsp;`util/`                               | Util scripts                       |
 | &nbsp;&nbsp;&nbsp;&nbsp;`views/`                              | UI views in React/TypeScript       |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$layout.tsx` | Layout/Menu for other views        |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index.tsx`   | Public Hilla view                  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`@layout.tsx` | Layout/Menu for other views        |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`@index.tsx`  | Public Hilla view                  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`about.tsx`   | Hilla view for authenticated users |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`hilla.tsx`   | Hilla view for 'USER'              |
 | &nbsp;&nbsp;&nbsp;&nbsp;`index.html`                          | HTML template                      |

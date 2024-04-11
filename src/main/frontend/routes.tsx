@@ -1,5 +1,5 @@
 import Flow from 'Frontend/generated/flow/Flow';
-import fileRoutes from 'Frontend/generated/views';
+import fileRoutes from 'Frontend/generated/file-routes';
 import Login from "Frontend/views/login";
 import {RouterConfigurationBuilder} from "@vaadin/hilla-file-router/runtime.js";
 
