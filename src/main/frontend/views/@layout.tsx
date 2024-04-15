@@ -32,9 +32,9 @@ export default function Layout() {
         }
     }
 
-    const hillaIsInRole = hillaConfig.rolesAllowed.every(role =>
-        state.user?.authorities.includes(role))
-    const flowIsInRole = state.user?.authorities.includes(
+    const hillaIsInRole = hillaConfig.rolesAllowed?.every(role =>
+        state.user?.authorities?.includes(role))
+    const flowIsInRole = state.user?.authorities?.includes(
         'ROLE_ADMIN');
 
     return (
