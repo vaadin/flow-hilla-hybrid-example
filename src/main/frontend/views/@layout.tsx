@@ -4,9 +4,10 @@ import { Button } from '@vaadin/react-components/Button.js';
 import { DrawerToggle } from '@vaadin/react-components/DrawerToggle.js';
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
 import { useRouteMetadata } from 'Frontend/util/routing.js';
-import {Suspense, useEffect} from 'react';
+import { Suspense, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import {useAuth} from "../auth";
+import { useAuth } from "../auth";
+import { config as hillaConfig } from "Frontend/views/hilla";
 
 const navLinkClasses = ({ isActive }: any) => {
     return `block rounded-m p-s ${isActive ? 'bg-primary-10 text-primary' : 'text-body'}`;
@@ -31,6 +32,11 @@ export default function Layout() {
         }
     }
 
+    const hillaIsInRole = hillaConfig.rolesAllowed.every(role =>
+        state.user?.authorities.includes(role))
+    const flowIsInRole = state.user?.authorities.includes(
+        'ROLE_ADMIN');
+
     return (
         <AppLayout primarySection="drawer">
             <div slot="drawer" className="flex flex-col justify-between h-full p-m">
@@ -40,17 +46,17 @@ export default function Layout() {
                         <NavLink className={navLinkClasses} to="/">
                             Hilla Public
                         </NavLink>
-                        {state.user ? (
+                        { state.user ? (
                             <NavLink className={navLinkClasses} to="/about">
                                 Hilla Authenticated
                             </NavLink>
                         ) : null}
-                        {state.user ? (
+                        { hillaIsInRole ? (
                             <NavLink className={navLinkClasses} to="/hilla">
                                 Hilla User
                             </NavLink>
                         ) : null}
-                        {state.user ? (
+                        { flowIsInRole ? (
                             <NavLink to={'/flow'} className={navLinkClasses}>
                                 Flow Admin
                             </NavLink>
