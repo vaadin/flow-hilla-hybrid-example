@@ -12,15 +12,22 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
+import com.vaadin.hilla.route.RouteUtil;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends VaadinWebSecurity {
+    private final RouteUtil routeUtil;
+
+    public SecurityConfig(RouteUtil routeUtil) {
+        this.routeUtil = routeUtil;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(registry -> {
             registry.requestMatchers(new AntPathRequestMatcher("/")).permitAll();
+            registry.requestMatchers(routeUtil::isRouteAllowed).permitAll();
         });
         super.configure(http);
         setLoginView(http, "/login", "/");
