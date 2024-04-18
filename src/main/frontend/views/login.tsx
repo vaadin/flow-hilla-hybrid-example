@@ -1,5 +1,5 @@
 import { LoginOverlay } from '@vaadin/react-components/LoginOverlay.js';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'Frontend/auth';
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
@@ -8,7 +8,11 @@ export const config: ViewConfig = {
     menu: { exclude: true}
 }
 
-const NavigateAndReload = ({ to }) => {
+interface NavigateAndReloadProps {
+    to: string;
+}
+
+const NavigateAndReload : React.FC<NavigateAndReloadProps> = ({ to }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
