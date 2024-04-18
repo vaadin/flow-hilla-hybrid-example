@@ -1,7 +1,24 @@
 import { LoginOverlay } from '@vaadin/react-components/LoginOverlay.js';
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'Frontend/auth';
+import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+
+export const config: ViewConfig = {
+    menu: { exclude: true}
+}
+
+const NavigateAndReload = ({ to }) => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate(to, { replace: true });
+        // reload a page on log in to update the menu items
+        window.location.reload();
+    }, [navigate, to]);
+
+    return null;
+};
 
 /**
  * Login views in Hilla
@@ -13,7 +30,7 @@ export default function Login() {
 
     if (state.user && url) {
         const path = new URL(url, document.baseURI).pathname;
-        return <Navigate to={path} replace />;
+        return <NavigateAndReload to={path} />;
     }
 
     return (
