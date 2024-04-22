@@ -32,9 +32,6 @@ export default function Layout() {
         }
     }
 
-    const flowIsInRole = state.user?.authorities?.includes(
-        'ROLE_ADMIN');
-
     return (
         <AppLayout primarySection="drawer">
             <div slot="drawer" className="flex flex-col justify-between h-full p-m">
@@ -48,11 +45,6 @@ export default function Layout() {
                                 </NavLink>
                             ))
                         }
-                        { flowIsInRole ? (
-                            <NavLink to={'/flow'} className={navLinkClasses}>
-                                Flow Admin
-                            </NavLink>
-                        ) : null}
                     </nav>
                 </header>
                 <footer className="flex flex-col gap-s">
