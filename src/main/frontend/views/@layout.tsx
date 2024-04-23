@@ -7,7 +7,7 @@ import { useRouteMetadata } from 'Frontend/util/routing.js';
 import { Suspense, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from "../auth";
-import { config as hillaConfig } from "Frontend/views/hilla";
+import { createMenuItems } from '@vaadin/hilla-file-router/runtime.js';
 
 const navLinkClasses = ({ isActive }: any) => {
     return `block rounded-m p-s ${isActive ? 'bg-primary-10 text-primary' : 'text-body'}`;
@@ -32,8 +32,6 @@ export default function Layout() {
         }
     }
 
-    const hillaIsInRole = hillaConfig.rolesAllowed?.every(role =>
-        state.user?.authorities?.includes(role))
     const flowIsInRole = state.user?.authorities?.includes(
         'ROLE_ADMIN');
 
@@ -43,19 +41,13 @@ export default function Layout() {
                 <header className="flex flex-col gap-m">
                     <h1 className="text-l m-0">Hybrid Example With Stateful Auth</h1>
                     <nav>
-                        <NavLink className={navLinkClasses} to="/">
-                            Hilla Public
-                        </NavLink>
-                        { state.user ? (
-                            <NavLink className={navLinkClasses} to="/about">
-                                Hilla Authenticated
-                            </NavLink>
-                        ) : null}
-                        { hillaIsInRole ? (
-                            <NavLink className={navLinkClasses} to="/hilla">
-                                Hilla User
-                            </NavLink>
-                        ) : null}
+                        {
+                            createMenuItems().map(({ to, title }) => (
+                                <NavLink className={navLinkClasses} to={to} key={to}>
+                                    {title}
+                                </NavLink>
+                            ))
+                        }
                         { flowIsInRole ? (
                             <NavLink to={'/flow'} className={navLinkClasses}>
                                 Flow Admin
