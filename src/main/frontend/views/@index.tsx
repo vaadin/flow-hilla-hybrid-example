@@ -1,4 +1,4 @@
-import { VerticalLayout } from "@vaadin/react-components/VerticalLayout.js";
+import { VerticalLayout } from "@vaadin/react-components";
 
 /**
  * Hilla view that is available publicly.

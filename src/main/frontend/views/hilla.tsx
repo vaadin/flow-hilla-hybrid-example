@@ -1,8 +1,6 @@
-import { Button } from "@vaadin/react-components/Button.js";
-import { TextField } from "@vaadin/react-components/TextField.js";
+import { Button, TextField, VerticalLayout } from "@vaadin/react-components";
 import { HelloEndpoint } from "Frontend/generated/endpoints";
 import { useState } from "react";
-import { VerticalLayout } from "@vaadin/react-components/VerticalLayout.js";
 import type { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
 export const config: ViewConfig = {
