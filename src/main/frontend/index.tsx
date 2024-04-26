@@ -5,7 +5,7 @@
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { router } from 'Frontend/generated/routes.js';
+import { router } from 'Frontend/generated/routes';
 import { AuthProvider } from './auth';
 
 function App() {
