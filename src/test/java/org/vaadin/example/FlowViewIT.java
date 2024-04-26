@@ -55,7 +55,7 @@ public class FlowViewIT extends BrowserTestBase {
         button.click();
         $(ParagraphElement.class).waitForFirst();
         button.click();
-        Assertions.assertEquals(2, $(ParagraphElement.class).all().size());
+        waitUntil(driver -> $(ParagraphElement.class).all().size() == 2);
     }
 
     @BrowserTest
