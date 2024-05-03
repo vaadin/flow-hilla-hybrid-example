@@ -15,7 +15,7 @@ import com.vaadin.flow.router.Route;
  * Flow view that is available only for users with role 'ADMIN'
  */
 @RolesAllowed("ADMIN")
-@Menu(title = "Flow admin")
+@Menu(title = "Flow admin", icon = "vaadin:tools")
 @Route("flow")
 public class FlowView extends VerticalLayout {
 

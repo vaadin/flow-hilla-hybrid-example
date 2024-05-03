@@ -1,4 +1,12 @@
-import { AppLayout, Avatar, Button, DrawerToggle, SideNav, SideNavItem } from "@vaadin/react-components";
+import {
+    AppLayout,
+    Avatar,
+    Button,
+    DrawerToggle,
+    Icon,
+    SideNav,
+    SideNavItem
+} from "@vaadin/react-components";
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
 import { useRouteMetadata } from 'Frontend/util/routing.js';
 import { Suspense, useEffect } from 'react';
@@ -36,8 +44,9 @@ export default function Layout() {
                         onNavigate={({ path }) => navigate(path!)}
                         location={location}>
                         {
-                            createMenuItems().map(({ to, title }) => (
+                            createMenuItems().map(({ to, icon, title }) => (
                                 <SideNavItem path={to} key={to}>
+                                    {icon && <Icon icon={icon} slot="prefix"/>}
                                     {title}
                                 </SideNavItem>
                             ))

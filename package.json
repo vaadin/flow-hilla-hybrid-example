@@ -18,6 +18,9 @@
     "@vaadin/react-components": "24.4.0-alpha23",
     "@vaadin/router": "1.7.5",
     "@vaadin/vaadin-development-mode-detector": "2.0.6",
+    "@vaadin/vaadin-lumo-styles": "24.4.0-alpha23",
+    "@vaadin/vaadin-material-styles": "24.4.0-alpha23",
+    "@vaadin/vaadin-themable-mixin": "24.4.0-alpha23",
     "@vaadin/vaadin-usage-statistics": "2.1.2",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
@@ -25,7 +28,7 @@
     "proj4": "2.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.22.3"
+    "react-router-dom": "6.23.0"
   },
   "devDependencies": {
     "@babel/preset-react": "7.24.1",
@@ -50,11 +53,11 @@
     "strip-css-comments": "5.0.0",
     "transform-ast": "2.4.4",
     "typescript": "5.4.5",
-    "vite": "5.2.9",
+    "vite": "5.2.10",
     "vite-plugin-checker": "0.6.4",
-    "workbox-build": "7.0.0",
-    "workbox-core": "7.0.0",
-    "workbox-precaching": "7.0.0"
+    "workbox-build": "7.1.0",
+    "workbox-core": "7.1.0",
+    "workbox-precaching": "7.1.0"
   },
   "vaadin": {
     "dependencies": {
@@ -73,6 +76,9 @@
       "@vaadin/react-components": "24.4.0-alpha23",
       "@vaadin/router": "1.7.5",
       "@vaadin/vaadin-development-mode-detector": "2.0.6",
+      "@vaadin/vaadin-lumo-styles": "24.4.0-alpha23",
+      "@vaadin/vaadin-material-styles": "24.4.0-alpha23",
+      "@vaadin/vaadin-themable-mixin": "24.4.0-alpha23",
       "@vaadin/vaadin-usage-statistics": "2.1.2",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
@@ -80,7 +86,7 @@
       "proj4": "2.11.0",
       "react": "18.2.0",
       "react-dom": "18.2.0",
-      "react-router-dom": "6.22.3"
+      "react-router-dom": "6.23.0"
     },
     "devDependencies": {
       "@babel/preset-react": "7.24.1",
@@ -105,13 +111,13 @@
       "strip-css-comments": "5.0.0",
       "transform-ast": "2.4.4",
       "typescript": "5.4.5",
-      "vite": "5.2.9",
+      "vite": "5.2.10",
       "vite-plugin-checker": "0.6.4",
-      "workbox-build": "7.0.0",
-      "workbox-core": "7.0.0",
-      "workbox-precaching": "7.0.0"
+      "workbox-build": "7.1.0",
+      "workbox-core": "7.1.0",
+      "workbox-precaching": "7.1.0"
     },
-    "hash": "92b58d8f4fa0cb6b10bab8431cedc5bce6883d5ae68748d5dde70e5d38022b24"
+    "hash": "b1e6e1946618b92cb51375d1609c30b43e5ac4e0108ed36b67a0de64a98c8665"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -136,6 +142,9 @@
     "@vaadin/hilla-react-form": "$@vaadin/hilla-react-form",
     "@vaadin/hilla-react-signals": "$@vaadin/hilla-react-signals",
     "date-fns": "$date-fns",
-    "proj4": "$proj4"
+    "proj4": "$proj4",
+    "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
+    "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
   }
 }
