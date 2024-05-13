@@ -7,6 +7,7 @@ export const config: ViewConfig = {
     loginRequired: true,
     rolesAllowed: ['ROLE_USER'],
     menu: {
+        title: "Hilla User page",
         icon: 'vaadin:user'
     }
 };

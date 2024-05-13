@@ -3,6 +3,7 @@ import type { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
 export const config: ViewConfig = {
     menu: {
+        title: "Public page",
         icon: 'vaadin:group'
     }
 };
