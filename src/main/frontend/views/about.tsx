@@ -4,6 +4,7 @@ import type { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 export const config: ViewConfig = {
     loginRequired: true,
     menu: {
+        title: "About page",
         icon: 'vaadin:info'
     }
 };

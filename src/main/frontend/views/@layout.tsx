@@ -8,18 +8,23 @@ import {
     SideNavItem
 } from "@vaadin/react-components";
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
-import { useRouteMetadata } from 'Frontend/util/routing.js';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../auth";
-import { createMenuItems } from '@vaadin/hilla-file-router/runtime.js';
+import { createMenuItems, useViewConfig } from '@vaadin/hilla-file-router/runtime.js';
+import { effect, Signal, signal } from "@vaadin/hilla-react-signals";
+
+const vaadin = window.Vaadin as {
+    documentTitleSignal: Signal<string>;
+};
+vaadin.documentTitleSignal = signal("");
+effect(() =>  document.title = vaadin.documentTitleSignal.value);
 
 export default function Layout() {
     const navigate = useNavigate();
     const location = useLocation();
-    const currentTitle = useRouteMetadata()?.title ?? 'Hybrid Example With Stateful Auth';
+    vaadin.documentTitleSignal.value = useViewConfig()?.title ?? '';
 
-    useEffect(() => {document.title = currentTitle;}, [currentTitle]);
 
     const { state, logout } = useAuth();
 
@@ -71,6 +76,9 @@ export default function Layout() {
             </div>
 
             <DrawerToggle slot="navbar" aria-label="Menu toggle"></DrawerToggle>
+            <h2 slot="navbar" className="text-l m-0">
+                {vaadin.documentTitleSignal}
+            </h2>
 
             <Suspense fallback={<Placeholder />}>
                 <Outlet />

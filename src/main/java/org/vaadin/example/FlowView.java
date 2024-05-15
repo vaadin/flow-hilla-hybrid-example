@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Menu;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 /**
@@ -17,6 +18,7 @@ import com.vaadin.flow.router.Route;
 @RolesAllowed("ADMIN")
 @Menu(title = "Flow admin", icon = "vaadin:tools")
 @Route("flow")
+@PageTitle("Flow Admin page")
 public class FlowView extends VerticalLayout {
 
     public FlowView(GreetService service) {
