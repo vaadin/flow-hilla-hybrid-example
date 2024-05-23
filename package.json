@@ -36,8 +36,10 @@
   "devDependencies": {
     "@babel/preset-react": "7.24.1",
     "@lit-labs/react": "^1.1.0",
+    "@playwright/test": "^1.44.0",
     "@rollup/plugin-replace": "5.0.5",
     "@rollup/pluginutils": "5.1.0",
+    "@types/node": "^20.12.12",
     "@types/react": "18.3.2",
     "@types/react-dom": "18.3.0",
     "@vaadin/hilla-generator-cli": "24.4.0-beta3",
@@ -155,6 +157,9 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "9cc2c701ccdb1da8318a8a00687b6aff18835ac7637bc706a4ba291de7d5b2b7"
+    "hash": "6459aaecb295d850338f1c26bd61afee88062fe9c287a8efb85fd4599a55e3ad"
+  },
+  "scripts": {
+    "test": "npx playwright install chromium && npx playwright test"
   }
 }
