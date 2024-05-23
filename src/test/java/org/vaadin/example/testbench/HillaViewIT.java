@@ -1,4 +1,4 @@
-package org.vaadin.example;
+package org.vaadin.example.testbench;
 
 public class HillaViewIT extends FlowViewIT {
     @Override
