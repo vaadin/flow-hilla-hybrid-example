@@ -1,0 +1,9 @@
+views:
+  - className: org.vaadin.example.FlowView
+    file: src/main/java/org/vaadin/example/FlowView.java
+    route: flow
+    framework: flow
+  - className: Hilla
+    file: src/main/frontend/views/hilla.tsx
+    route: hilla
+    framework: react
