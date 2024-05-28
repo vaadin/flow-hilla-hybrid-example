@@ -91,8 +91,10 @@
   },
   "devDependencies": {
     "@lit-labs/react": "^1.1.0",
+    "@playwright/test": "^1.44.0",
     "@rollup/plugin-replace": "5.0.4",
     "@rollup/pluginutils": "5.0.5",
+    "@types/node": "^20.12.12",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "4.2.0",
@@ -301,6 +303,9 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "14cf24093dd33c367ea3ac05e00fecfa3c0e890578ffac72307cfa0970988e18"
+    "hash": "a6668d44710287a91b569211e2b0e7ac0bd173bcfa950db57f4b284f377f6d51",
+    "scripts": {
+      "test": "npx playwright install chromium && npx playwright test"
+    }
   }
 }
