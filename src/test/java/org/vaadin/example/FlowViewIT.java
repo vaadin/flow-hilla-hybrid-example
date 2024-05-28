@@ -1,103 +1,82 @@
+
 package org.vaadin.example;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.By;
+import org.junit.jupiter.api.Test;
 
-import com.vaadin.flow.component.button.testbench.ButtonElement;
-import com.vaadin.flow.component.html.testbench.ParagraphElement;
-import com.vaadin.flow.component.login.testbench.LoginOverlayElement;
-import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
-import com.vaadin.testbench.BrowserTest;
-import com.vaadin.testbench.BrowserTestBase;
+import com.microsoft.playwright.Page.GetByRoleOptions;
+import com.microsoft.playwright.options.AriaRole;
+import com.vaadin.uitest.common.BasePlayWrightIT;
 
-public class FlowViewIT extends BrowserTestBase {
+public class FlowViewIT extends BasePlayWrightIT {
 
-    private static final String SAY_HELLO_BUTTON_ID = "say-hello";
-
-    /**
-     * If running on CI, get the host name from environment variable HOSTNAME
-     *
-     * @return the host name
-     */
-    private static String getDeploymentHostname() {
-        String hostname = System.getenv("HOSTNAME");
-        if (hostname != null && !hostname.isEmpty()) {
-            return hostname;
-        }
-        return "localhost";
-    }
-
-    protected String getPath() {
-        return "/flow";
+    @Override
+    public String getUrl() {
+        return "http://localhost:8080/flow";
     }
 
     @BeforeEach
-    public void open() {
-        getDriver().get("http://" + getDeploymentHostname() + ":8080" + getPath());
-        login();
+    public void setupTest() throws Exception {
+        super.setupTest();
+        // Login steps
+        fill(page.locator("vaadin-login-form vaadin-text-field"), "admin");
+        fill(page.locator("vaadin-login-form vaadin-password-field"), "admin");
+        click(page.locator("vaadin-login-form vaadin-button"));
+        page.waitForURL(getUrl());
+        page.waitForTimeout(300);
     }
 
-    @BrowserTest
+
+    @Test
     public void clickingButtonShowsNotification() throws Exception {
-        Assertions.assertFalse($(ParagraphElement.class).exists());
-        waitForElementPresent(By.id(SAY_HELLO_BUTTON_ID));
-        $(ButtonElement.class).id(SAY_HELLO_BUTTON_ID).click();
-        $(ParagraphElement.class).waitForFirst();
-        Assertions.assertTrue($(ParagraphElement.class).exists());
+        assertFalse(page.locator("vaadin-vertical-layout p").count() > 0);
+        page.getByLabel("Your name").click();
+        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        assertEquals(1, page.locator("p").count());
     }
 
-    @BrowserTest
+    @Test
     public void clickingButtonTwiceShowsTwoNotifications() {
-        Assertions.assertFalse($(ParagraphElement.class).exists());
-        waitForElementPresent(By.id(SAY_HELLO_BUTTON_ID));
-        ButtonElement button = $(ButtonElement.class).id(SAY_HELLO_BUTTON_ID);
-        button.click();
-        $(ParagraphElement.class).waitForFirst();
-        button.click();
-        waitUntil(driver -> $(ParagraphElement.class).all().size() == 2);
+        assertFalse(page.locator("vaadin-vertical-layout p").count() > 0);
+        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Say hello")).click();
+        page.locator("vaadin-vertical-layout p").nth(0).waitFor();
+        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Say hello")).click();
+        page.locator("vaadin-vertical-layout p").nth(1).waitFor();
+        assertEquals(2, page.locator("vaadin-vertical-layout p").count());
     }
 
-    @BrowserTest
+    @Test
     public void testClickButtonShowsHelloAnonymousUserNotificationWhenUserNameIsEmpty() {
-        waitForElementPresent(By.id(SAY_HELLO_BUTTON_ID));
-        ButtonElement button = $(ButtonElement.class).id(SAY_HELLO_BUTTON_ID);
-        button.click();
-        ParagraphElement msg = $(ParagraphElement.class).waitForFirst();
-        Assertions.assertEquals("Hello anonymous user", msg.getText());
+        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Hello anonymous user"));
     }
 
-    @BrowserTest
+    @Test
     public void testClickButtonShowsHelloUserNotificationWhenUserIsNotEmpty() {
-        waitForElementPresent(By.id(SAY_HELLO_BUTTON_ID));
-        TextFieldElement textField = $(TextFieldElement.class).waitForFirst();
-        textField.setValue("Vaadiner");
-        ButtonElement button = $(ButtonElement.class).id(SAY_HELLO_BUTTON_ID);
-        button.click();
-        ParagraphElement msg = $(ParagraphElement.class).waitForFirst();
-        Assertions.assertEquals("Hello Vaadiner", msg.getText());
+        fill(page.locator("vaadin-vertical-layout vaadin-text-field").first(), "Vaadiner");
+        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Hello Vaadiner"));
     }
 
-    @BrowserTest
-    public void testEnterShowsHelloUserNotificationWhenUserIsNotEmpty() {
-        waitForElementPresent(By.id(SAY_HELLO_BUTTON_ID));
-        TextFieldElement textField = $(TextFieldElement.class).waitForFirst();
-        textField.setValue("Vaadiner");
-        ButtonElement button = $(ButtonElement.class).id(SAY_HELLO_BUTTON_ID);
-        button.click();
-        ParagraphElement msg = $(ParagraphElement.class).waitForFirst();
-        Assertions.assertEquals("Hello Vaadiner", msg.getText());
-    }
+    @Test
+    public void userEntersNameAndClicksButton() throws Exception {
+        // Given the user is on the page HelloView
+        page.waitForSelector("vaadin-vertical-layout vaadin-text-field");
+        page.waitForSelector("vaadin-vertical-layout vaadin-button");
 
-    protected void login() {
-        login("admin", "admin");
-    }
+        // And the user has entered 'Jane Smith' in the text field with label 'Your
+        // name'
+        fill(page.locator("vaadin-vertical-layout vaadin-text-field").first(), "Jane Smith");
 
-    protected void login(String user, String password) {
-        LoginOverlayElement loginOverlay = $(LoginOverlayElement.class)
-                .waitForFirst();
-        loginOverlay.getUsernameField().setValue(user);
-        loginOverlay.getPasswordField().setValue(password);
-        loginOverlay.submit();
+        // When the user clicks on the button with label 'Say hello'
+        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+
+        // Then a paragraph with text 'Hello, Jane Smith' should appear
+        page.waitForSelector("vaadin-vertical-layout p");
+        assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Jane Smith"));
     }
 }

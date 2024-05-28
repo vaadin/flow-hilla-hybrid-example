@@ -30,11 +30,34 @@ If you want to run the application locally in the production mode, use `spring-b
 
 ### Running Integration Tests
 
-Integration tests are implemented using [Vaadin TestBench](https://vaadin.com/testbench). The tests take a few minutes to run and are therefore included in a separate Maven profile. We recommend running tests with a production build to minimize the chance of development time toolchains affecting test stability. To run the tests using Google Chrome, execute
+Integration tests are implemented using [Playwright](https://playwright.dev). The tests take a few minutes to run and are therefore included in a separate Maven profile. We recommend running tests with a production build to minimize the chance of development time toolchains affecting test stability.
 
-`mvn verify -Pit,production`
+Since Playwright supports either Java or TypeScript, tests for Flow views are implemented in Java whereas Hilla views are tested in TS
 
-and make sure you have a valid TestBench license installed.
+To run the tests using Google Chrome for both Flow and Hilla views run:
+
+```
+mvn verify -Pit,production
+```
+
+For running tests in headed mode run:
+
+```
+mvn verify -Pit,production -Dheadless=false
+```
+
+
+If you prefer run only Hilla tests, just execute:
+
+```
+npm test
+```
+
+Or for interacting with the playwright UI Test:
+
+```
+npm test -- --ui
+```
 
 ## Structure
 
@@ -59,3 +82,4 @@ Vaadin web applications are full-stack and include both client-side and server-s
 | &nbsp;&nbsp;&nbsp;&nbsp;`Application.java`                    | Server entrypoint                  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`FlowView.java`                       | Server-side view for 'ADMIN'       |
 | &nbsp;&nbsp;&nbsp;&nbsp;`GreetService.java`                   | Back-end service example           |
+
