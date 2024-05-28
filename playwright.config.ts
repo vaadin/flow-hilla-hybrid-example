@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const isMaven = !!process.env.MAVEN_CMD_LINE_ARGS;
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -11,17 +13,20 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './src/test/frontend/views',
-  outputDir: './target/playwright',
+  outputDir: './target/playwright-reports/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: isMaven,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: isMaven ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: isMaven ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { outputFolder: 'target/playwright/report' }]],
+  reporter: [
+    ['html', { outputFolder: 'target/playwright-reports/html', open: !isMaven }],
+    ['junit', { outputFile: 'target/playwright-reports/TEST-frontend-report.xml' }]
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -73,8 +78,8 @@ export default defineConfig({
   webServer: {
     command: "./mvnw -B -ntp -Dspring-boot.run.jvmArguments='-Dvaadin.launch-browser=false'",
     url: "http://127.0.0.1:8080",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: isMaven,
     stdout: "pipe",
     stderr: "pipe",
-  },  
+  },
 });

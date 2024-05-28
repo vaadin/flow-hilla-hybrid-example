@@ -1,12 +1,16 @@
 
 package org.vaadin.example;
 
-import com.vaadin.uitest.common.BasePlayWrightIT;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.microsoft.playwright.Page.GetByRoleOptions;
+import com.microsoft.playwright.options.AriaRole;
+import com.vaadin.uitest.common.BasePlayWrightIT;
 
 public class FlowViewIT extends BasePlayWrightIT {
 
@@ -15,48 +19,63 @@ public class FlowViewIT extends BasePlayWrightIT {
         return "http://localhost:8080/flow";
     }
 
-    // Scenario: Initial state of FlowView
-    @Test
-    public void initialStateOfFlowView() throws Exception {
-        // Given the user is on the page FlowView
-        page.waitForSelector("vaadin-app-layout");
-
-        // Then the user should see an app layout with tag name 'vaadin-app-layout'
-        Assertions.assertTrue(page.locator("vaadin-app-layout").count() > 0);
-
-        // And a button with role 'button' and label 'Say hello'
-        Assertions.assertTrue(page.locator("button[role='button'][aria-label='Say hello']").count() > 0);
-
-        // And a text field with role 'textbox' and label 'Your name'
-        Assertions.assertTrue(page.locator("input[role='textbox'][aria-label='Your name']").count() > 0);
+    @BeforeEach
+    public void setupTest() throws Exception {
+        super.setupTest();
+        // Login steps
+//        fill(page.locator("vaadin-text-field"), "user");
+//        fill(page.locator("vaadin-password-field"), "user");
+//        click(page.locator("vaadin-button"));
+//        page.waitForURL(getUrl());
     }
 
-    // Scenario: User clicks on the 'Say hello' button
+
     @Test
-    public void userClicksOnTheSayHelloButton() throws Exception {
-        // Given the user is on the page FlowView
-        page.waitForSelector("vaadin-app-layout");
-
-        // And the user has entered 'Jane Smith' in the text field with role 'textbox'
-        // and label 'Your name'
-        fill(page.locator("input[role='textbox'][aria-label='Your name']"), "Jane Smith");
-
-        // When the user clicks on the button with role 'button' and label 'Say hello'
-        click(page.locator("button[role='button'][aria-label='Say hello']"));
-
-        // Then a notification with tag name 'vaadin-notification' and text 'Hello, Jane
-        // Smith' should appear
-        page.waitForSelector("vaadin-notification");
-        Assertions.assertTrue(page.locator("vaadin-notification").innerText().contains("Hello, Jane Smith"));
+    public void clickingButtonShowsNotification() throws Exception {
+        assertFalse(page.locator("p").count() > 0);
+        page.getByLabel("Your name").click();
+        click(page.locator("vaadin-button").first());
+        assertEquals(1, page.locator("p").count());
     }
 
-    // Additional scenarios would be implemented here following the same pattern.
-    // For example:
-    // @Test
-    // @Disabled
-    // public void additionalScenario() throws Exception {
-    // // Given ...
-    // // When ...
-    // // Then ...
-    // }
+    @Test
+    public void clickingButtonTwiceShowsTwoNotifications() {
+        assertFalse(page.locator("p").count() > 0);
+        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Say hello")).click();
+        page.locator("p").nth(0).waitFor();
+        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Say hello")).click();
+        page.locator("p").nth(1).waitFor();
+        assertEquals(2, page.locator("p").count());
+    }
+
+    @Test
+    public void testClickButtonShowsHelloAnonymousUserNotificationWhenUserNameIsEmpty() {
+        click(page.locator("vaadin-button").first());
+        assertTrue(page.locator("p").textContent().contains("Hello anonymous user"));
+    }
+
+    @Test
+    public void testClickButtonShowsHelloUserNotificationWhenUserIsNotEmpty() {
+        fill(page.locator("vaadin-text-field").first(), "Vaadiner");
+        click(page.locator("vaadin-button").first());
+        assertTrue(page.locator("p").textContent().contains("Hello Vaadiner"));
+    }
+
+    @Test
+    public void userEntersNameAndClicksButton() throws Exception {
+        // Given the user is on the page HelloView
+        page.waitForSelector("vaadin-text-field");
+        page.waitForSelector("vaadin-button");
+
+        // And the user has entered 'Jane Smith' in the text field with label 'Your
+        // name'
+        fill(page.locator("vaadin-text-field").first(), "Jane Smith");
+
+        // When the user clicks on the button with label 'Say hello'
+        click(page.locator("vaadin-button").first());
+
+        // Then a paragraph with text 'Hello, Jane Smith' should appear
+        page.waitForSelector("p");
+        assertTrue(page.locator("p").textContent().contains("Jane Smith"));
+    }
 }

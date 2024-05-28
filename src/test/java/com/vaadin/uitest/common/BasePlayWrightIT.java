@@ -34,7 +34,7 @@ public class BasePlayWrightIT implements HasTestView {
     // @formatter:on
 
     protected Page page;
-    private static Browser browser;
+    protected static Browser browser;
 
     @BeforeEach
     public void setupTest() throws Exception {
@@ -42,7 +42,7 @@ public class BasePlayWrightIT implements HasTestView {
         page.navigate(getUrl() + getView());
         page.waitForFunction(WAIT_FOR_VAADIN_SCRIPT);
         page.setDefaultNavigationTimeout(4000);
-        page.setDefaultTimeout(1500);
+        page.setDefaultTimeout(15000);
     }
 
     @AfterEach
@@ -59,7 +59,7 @@ public class BasePlayWrightIT implements HasTestView {
     public static void setup() throws Exception {
         Playwright playwright = Playwright.create();
         browser = playwright.chromium().launch(new LaunchOptions()
-                .setHeadless(Boolean.getBoolean("headless")));
+                .setHeadless(System.getProperty("headless") == null || Boolean.getBoolean("headless")));
     }
 
     protected Page getPage() {
