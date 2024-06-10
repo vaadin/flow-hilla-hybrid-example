@@ -7,6 +7,7 @@ import {
     SideNav,
     SideNavItem
 } from "@vaadin/react-components";
+import '@vaadin/icons';
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
 import { Suspense } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
