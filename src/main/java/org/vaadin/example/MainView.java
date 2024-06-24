@@ -15,11 +15,16 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.PermitAll;
 
 /**
  * The main view is a top-level placeholder for other views.
  */
+@Route("")
+@AnonymousAllowed
 public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
@@ -34,6 +39,8 @@ public class MainView extends AppLayout {
         // Put the menu in the drawer
         menu = createMenu();
         addToDrawer(createDrawerContent(menu));
+
+        getElement().appendChild(new ReactRouterOutlet().getElement());
     }
 
     private Component createHeaderContent() {
@@ -55,7 +62,7 @@ public class MainView extends AppLayout {
         layout.add(viewTitle);
 
         // A user icon
-        layout.add(new Image("images/user.svg", "Avatar"));
+//        layout.add(new Image("images/user.svg", "Avatar"));
 
         return layout;
     }
@@ -74,7 +81,7 @@ public class MainView extends AppLayout {
         HorizontalLayout logoLayout = new HorizontalLayout();
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.add(new Image("images/logo.png", "My Project logo"));
+//        logoLayout.add(new Image("images/logo.png", "My Project logo"));
         logoLayout.add(new H1("My Project"));
 
         // Display the logo and the menu in the drawer
