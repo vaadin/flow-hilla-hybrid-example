@@ -23,6 +23,7 @@ import jakarta.annotation.security.PermitAll;
 /**
  * The main view is a top-level placeholder for other views.
  */
+// TODO: introduce @Layout("") to replace @Route("")
 @Route("")
 @AnonymousAllowed
 public class MainView extends AppLayout {
