@@ -1,31 +1,40 @@
 package org.vaadin.example;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.react.ReactRouterOutlet;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.PermitAll;
+import com.vaadin.flow.server.frontend.Layout;
+import com.vaadin.flow.server.menu.AvailableViewInfo;
+import com.vaadin.flow.server.menu.MenuRegistry;
+
 
 /**
  * The main view is a top-level placeholder for other views.
  */
-// TODO: introduce @Layout("") to replace @Route("")
-@Route("")
+// TODO: create layout field to hilla ViewConfig so that a server side layout can be defined
+// To use current implementation add `"layout": ""` for hilla routes in file-routes.json
+    // Note! also login reuires the layout as the current routes.tsx always adds a server layout
 @AnonymousAllowed
+@Layout
 public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
@@ -40,8 +49,6 @@ public class MainView extends AppLayout {
         // Put the menu in the drawer
         menu = createMenu();
         addToDrawer(createDrawerContent(menu));
-
-        getElement().appendChild(new ReactRouterOutlet().getElement());
     }
 
     private Component createHeaderContent() {
@@ -86,7 +93,7 @@ public class MainView extends AppLayout {
         logoLayout.add(new H1("My Project"));
 
         // Display the logo and the menu in the drawer
-        layout.add(logoLayout, menu);
+        layout.add(logoLayout, menu, new Anchor("login", "Login"));
         return layout;
     }
 
@@ -100,14 +107,21 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[] { createTab("Hello World", FlowView.class),};
+        Map<String, AvailableViewInfo> views = MenuRegistry.collectMenuItems();
+        List<Tab> tabs = new ArrayList<>();
+        for(String key: views.keySet()) {
+            if(views.get(key).route().equals("login")) {
+                continue;
+            }
+            tabs.add(createTab(views.get(key).title(), views.get(key).route()));
+        }
+        return tabs.toArray(new Component[tabs.size()]);
     }
 
-    private static Tab createTab(String text,
-                                 Class<? extends Component> navigationTarget) {
+    private static Tab createTab(String text, String link) {
         final Tab tab = new Tab();
-        tab.add(new RouterLink(text, navigationTarget));
-        ComponentUtil.setData(tab, Class.class, navigationTarget);
+        tab.add(new Anchor(link, text));
+//        ComponentUtil.setData(tab, Class.class, navigationTarget);
         return tab;
     }
 
@@ -123,13 +137,36 @@ public class MainView extends AppLayout {
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
+        if(component == null) {
+            return Optional.empty();
+        }
         return menu.getChildren()
-                .filter(tab -> ComponentUtil.getData(tab, Class.class)
-                        .equals(component.getClass()))
+                .filter(tab -> component.getClass()
+                        .equals(ComponentUtil.getData(tab, Class.class)))
                 .findFirst().map(Tab.class::cast);
     }
 
     private String getCurrentPageTitle() {
-        return getContent().getClass().getAnnotation(PageTitle.class).value();
+        if(getContent() == null || getContent().getClass().equals(
+                ReactRouterOutlet.class)) {
+            return getClientTitle();
+        }
+        String titleValue = getContent().getClass().getAnnotation(PageTitle.class)
+                .value();
+        return titleValue.isEmpty() ? getClientTitle() : titleValue;
+    }
+
+    private String getClientTitle() {
+        UI ui = UI.getCurrent();
+        String currentPath = ui.getActiveViewLocation().getPath();
+        Map<String, AvailableViewInfo> clientMenuItems = MenuRegistry.collectClientMenuItems(
+                true, VaadinSession.getCurrent().getConfiguration());
+        Optional<String> clientView = clientMenuItems.keySet().stream()
+                .filter(key -> key.equals(currentPath) || key.equals("/"+currentPath)).findFirst();
+        if(clientView.isPresent()) {
+            return clientMenuItems.get(clientView.get()).menu().title();
+        }
+
+        return "";
     }
 }

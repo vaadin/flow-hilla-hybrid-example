@@ -35,7 +35,6 @@
 import { RouterConfigurationBuilder as OriginalRouterConfigurationBuilder } from '@vaadin/hilla-file-router/runtime.js';
 // Bypass Flow exception:
 import Flow from 'Frontend/generated/flow/Flow';
-import CustomFlow from 'Frontend/Flow';
 import fileRoutes from 'Frontend/generated/file-routes';
 import {createBrowserRouter, RouteObject} from 'react-router-dom';
 import type { RouterBuildOptions, RouterConfiguration } from '@vaadin/hilla-file-router/types.js';
@@ -93,36 +92,6 @@ class RouterConfigurationBuilder extends OriginalRouterConfigurationBuilder {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const { router, routes } = ((Flow) =>
 
   new RouterConfigurationBuilder()
@@ -136,4 +105,4 @@ export const { router, routes } = ((Flow) =>
     .protect()
     .build()
 
-)(CustomFlow);
+)(Flow);
