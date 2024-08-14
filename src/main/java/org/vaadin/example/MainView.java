@@ -121,7 +121,7 @@ public class MainView extends AppLayout {
     private static Tab createTab(String text, String link) {
         final Tab tab = new Tab();
         tab.add(new Anchor(link, text));
-//        ComponentUtil.setData(tab, Class.class, navigationTarget);
+        ComponentUtil.setData(tab, String.class, link);
         return tab;
     }
 
@@ -130,19 +130,18 @@ public class MainView extends AppLayout {
         super.afterNavigation();
 
         // Select the tab corresponding to currently shown view
-        getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
+        getTabForComponent().ifPresent(menu::setSelectedTab);
 
         // Set the view title in the header
         viewTitle.setText(getCurrentPageTitle());
     }
 
-    private Optional<Tab> getTabForComponent(Component component) {
-        if(component == null) {
-            return Optional.empty();
-        }
+    private Optional<Tab> getTabForComponent() {
+        UI ui = UI.getCurrent();
+        String currentPath = ui.getActiveViewLocation().getPath();
         return menu.getChildren()
-                .filter(tab -> component.getClass()
-                        .equals(ComponentUtil.getData(tab, Class.class)))
+                .filter(tab -> currentPath
+                        .equals(ComponentUtil.getData(tab, String.class)))
                 .findFirst().map(Tab.class::cast);
     }
 
