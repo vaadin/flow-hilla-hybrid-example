@@ -83,11 +83,14 @@ class RouterConfigurationBuilder extends OriginalRouterConfigurationBuilder {
 
   build(options?: RouterBuildOptions): RouterConfiguration {
     const {routes: superRoutes, router: superRouter} = super.build(options);
-
-    const routes = this.#modifiers.reduce<readonly RouteObject[]>((acc, mod) => mod(acc) ?? acc, superRoutes) ?? [];
+    let withLayout = superRoutes.filter(route => route.handle && route.handle.layout !== undefined);
+    let withoutLayout = superRoutes.filter(route => !route.handle || route.handle.layout === undefined);
+    withLayout.push(superRoutes[superRoutes.length-1]); // Add * fallback to all child routes
+    const modifiedRoutes = this.#modifiers.reduce<readonly RouteObject[]>((acc, mod) => mod(acc) ?? acc, withLayout) ?? [];
+    withoutLayout.unshift(...modifiedRoutes);
     return {
-      routes,
-      router: createBrowserRouter([...routes], { basename: new URL(document.baseURI).pathname, ...options }),
+      routes: withoutLayout,
+      router: createBrowserRouter([...withoutLayout], { basename: new URL(document.baseURI).pathname, ...options }),
     };
   }
 }

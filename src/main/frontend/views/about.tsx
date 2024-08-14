@@ -6,7 +6,8 @@ export const config: ViewConfig = {
     menu: {
         title: "About page",
         icon: 'vaadin:info'
-    }
+    },
+    layout: ""
 };
 
 /**

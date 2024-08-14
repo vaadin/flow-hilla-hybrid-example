@@ -9,7 +9,8 @@ export const config: ViewConfig = {
     menu: {
         title: "Hilla User page",
         icon: 'vaadin:user'
-    }
+    },
+    layout: ""
 };
 
 /**
