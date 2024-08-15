@@ -17,7 +17,7 @@ import com.vaadin.flow.router.Route;
  */
 @RolesAllowed("ADMIN")
 @Menu(title = "Flow admin", icon = "vaadin:tools")
-@Route(value = "flow", layout = MainView.class)
+@Route(value = "flow")//, layout = MainView.class)
 @PageTitle("Flow Admin page")
 public class FlowView extends VerticalLayout {
 
