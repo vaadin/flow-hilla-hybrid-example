@@ -46,36 +46,26 @@ type RouteModifier = (routes: readonly RouteObject[]) => readonly RouteObject[];
 class RouterConfigurationBuilder extends OriginalRouterConfigurationBuilder {
   #modifiers: RouteModifier[] = [];
 
-  withLayouts(paths: readonly string[], layoutComponent: ComponentType) {
-    const pathSet = new Set(paths);
-
-    function applyLayouts(contextPath: string, routes: readonly RouteObject[]): readonly RouteObject[] {
+  withLayouts(layoutComponent: ComponentType) {
+    function applyLayouts(routes: readonly RouteObject[]): readonly RouteObject[] {
       const nestedRoutes = routes.map((route) => {
         if (route.children === undefined || route.index) {
           return route;
         }
 
-        const childPath = route.path
-          ? route.path.startsWith('/') ? route.path : `/${route.path}`
-          : '';
-        const childContextPath = `${contextPath}${childPath}`;
         return {
           ...route,
-          children: applyLayouts(childContextPath, route.children),
+          children: applyLayouts(route.children),
         } as RouteObject;
       });
-      if (pathSet.has(contextPath)) {
         return [{
           element: createElement(layoutComponent),
           children: nestedRoutes,
         }];
-      } else {
-        return nestedRoutes;
-      }
     }
 
     this.#modifiers.push((routes: readonly RouteObject[]) => {
-      return applyLayouts('', routes);
+      return applyLayouts(routes);
     });
 
     return this;
@@ -99,10 +89,9 @@ export const { router, routes } = ((Flow) =>
 
   new RouterConfigurationBuilder()
     .withFileRoutes(fileRoutes) // (1)
-    //...
 
-    // TODO: automatically use paths from @Layout matching available routes for the current user
-    .withLayouts([''], Flow)
+    // @Layout automatically defines server layout matching available routes for the current user
+    .withLayouts(Flow)
 
     .withFallback(Flow)
     .protect()
