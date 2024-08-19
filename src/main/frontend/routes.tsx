@@ -33,6 +33,7 @@
  * as the import isn't updated automatically by Vaadin in this case.
  ******************************************************************************/
 import { RouterConfigurationBuilder as OriginalRouterConfigurationBuilder } from '@vaadin/hilla-file-router/runtime.js';
+// import { RouterConfigurationBuilder } from '@vaadin/hilla-file-router/runtime.js';
 // Bypass Flow exception:
 import Flow from 'Frontend/generated/flow/Flow';
 import fileRoutes from 'Frontend/generated/file-routes';
@@ -65,7 +66,18 @@ class RouterConfigurationBuilder extends OriginalRouterConfigurationBuilder {
     }
 
     this.#modifiers.push((routes: readonly RouteObject[]) => {
-      return applyLayouts(routes);
+        if(!routes) {
+            return routes;
+        }
+        const withLayout = routes.filter(
+            (route) => typeof route.handle === 'object' && 'flowLayout' in route.handle && route.handle.flowLayout
+        );
+        const allRoutes = routes.filter((route) => !withLayout.includes(route));
+        // !route.handle || !route.handle.flowLayout);
+        withLayout.push(routes[routes.length - 1]); // Add * fallback to all child routes
+
+        allRoutes.unshift(...applyLayouts(withLayout));
+        return allRoutes;
     });
 
     return this;
@@ -73,14 +85,11 @@ class RouterConfigurationBuilder extends OriginalRouterConfigurationBuilder {
 
   build(options?: RouterBuildOptions): RouterConfiguration {
     const {routes: superRoutes, router: superRouter} = super.build(options);
-    let withLayout = superRoutes.filter(route => route.handle && route.handle.layout !== undefined);
-    let withoutLayout = superRoutes.filter(route => !route.handle || route.handle.layout === undefined);
-    withLayout.push(superRoutes[superRoutes.length-1]); // Add * fallback to all child routes
-    const modifiedRoutes = this.#modifiers.reduce<readonly RouteObject[]>((acc, mod) => mod(acc) ?? acc, withLayout) ?? [];
-    withoutLayout.unshift(...modifiedRoutes);
+
+    const routes = this.#modifiers.reduce<readonly RouteObject[]>((acc, mod) => mod(acc) ?? acc, superRoutes) ?? [];
     return {
-      routes: withoutLayout,
-      router: createBrowserRouter([...withoutLayout], { basename: new URL(document.baseURI).pathname, ...options }),
+      routes,
+      router: createBrowserRouter([...routes], { basename: new URL(document.baseURI).pathname, ...options }),
     };
   }
 }

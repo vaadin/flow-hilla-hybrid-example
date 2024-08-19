@@ -6,7 +6,7 @@ export const config: ViewConfig = {
         title: "Public page",
         icon: 'vaadin:group'
     },
-    layout: ""
+    flowLayout: true
 };
 
 /**

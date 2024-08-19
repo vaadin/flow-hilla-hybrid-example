@@ -10,7 +10,7 @@ export const config: ViewConfig = {
         title: "Hilla User page",
         icon: 'vaadin:user'
     },
-    layout: ""
+    flowLayout: true
 };
 
 /**

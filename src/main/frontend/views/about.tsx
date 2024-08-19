@@ -7,7 +7,7 @@ export const config: ViewConfig = {
         title: "About page",
         icon: 'vaadin:info'
     },
-    layout: ""
+    flowLayout: true
 };
 
 /**
