@@ -22,7 +22,7 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.server.frontend.Layout;
+import com.vaadin.flow.router.Layout;
 import com.vaadin.flow.server.menu.AvailableViewInfo;
 import com.vaadin.flow.server.menu.MenuRegistry;
 
@@ -32,7 +32,7 @@ import com.vaadin.flow.server.menu.MenuRegistry;
  */
 // TODO: create layout field to hilla ViewConfig so that a server side layout can be defined
 // To use current implementation add `"layout": ""` for hilla routes in file-routes.json
-    // Note! also login reuires the layout as the current routes.tsx always adds a server layout
+    // Note! also login requires the layout as the current routes.tsx always adds a server layout
 @AnonymousAllowed
 @Layout
 public class MainView extends AppLayout {

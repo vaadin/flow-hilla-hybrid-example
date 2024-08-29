@@ -32,67 +32,10 @@
  * exists in the frontend folder (not in generated folder) and you copied the file,
  * as the import isn't updated automatically by Vaadin in this case.
  ******************************************************************************/
-import { RouterConfigurationBuilder as OriginalRouterConfigurationBuilder } from '@vaadin/hilla-file-router/runtime.js';
-// import { RouterConfigurationBuilder } from '@vaadin/hilla-file-router/runtime.js';
-// Bypass Flow exception:
+import { RouterConfigurationBuilder } from '@vaadin/hilla-file-router/runtime.js';
 import Flow from 'Frontend/generated/flow/Flow';
 import fileRoutes from 'Frontend/generated/file-routes';
-import {createBrowserRouter, RouteObject} from 'react-router-dom';
-import type { RouterBuildOptions, RouterConfiguration } from '@vaadin/hilla-file-router/types.js';
-import {ComponentType, createElement} from "react";
 
-type RouteModifier = (routes: readonly RouteObject[]) => readonly RouteObject[];
-
-
-class RouterConfigurationBuilder extends OriginalRouterConfigurationBuilder {
-  #modifiers: RouteModifier[] = [];
-
-  withLayouts(layoutComponent: ComponentType) {
-    function applyLayouts(routes: readonly RouteObject[]): readonly RouteObject[] {
-      const nestedRoutes = routes.map((route) => {
-        if (route.children === undefined || route.index) {
-          return route;
-        }
-
-        return {
-          ...route,
-          children: applyLayouts(route.children),
-        } as RouteObject;
-      });
-        return [{
-          element: createElement(layoutComponent),
-          children: nestedRoutes,
-        }];
-    }
-
-    this.#modifiers.push((routes: readonly RouteObject[]) => {
-        if(!routes) {
-            return routes;
-        }
-        const withLayout = routes.filter(
-            (route) => typeof route.handle === 'object' && 'flowLayout' in route.handle && route.handle.flowLayout
-        );
-        const allRoutes = routes.filter((route) => !withLayout.includes(route));
-        // !route.handle || !route.handle.flowLayout);
-        withLayout.push(routes[routes.length - 1]); // Add * fallback to all child routes
-
-        allRoutes.unshift(...applyLayouts(withLayout));
-        return allRoutes;
-    });
-
-    return this;
-  }
-
-  build(options?: RouterBuildOptions): RouterConfiguration {
-    const {routes: superRoutes, router: superRouter} = super.build(options);
-
-    const routes = this.#modifiers.reduce<readonly RouteObject[]>((acc, mod) => mod(acc) ?? acc, superRoutes) ?? [];
-    return {
-      routes,
-      router: createBrowserRouter([...routes], { basename: new URL(document.baseURI).pathname, ...options }),
-    };
-  }
-}
 
 export const { router, routes } = ((Flow) =>
 
@@ -100,7 +43,7 @@ export const { router, routes } = ((Flow) =>
     .withFileRoutes(fileRoutes) // (1)
 
     // @Layout automatically defines server layout matching available routes for the current user
-    .withLayouts(Flow)
+    .withLayout(Flow)
 
     .withFallback(Flow)
     .protect()

@@ -11,6 +11,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
 /**
  * Flow view that is available only for users with role 'ADMIN'
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.Route;
 @RolesAllowed("ADMIN")
 @Menu(title = "Flow admin", icon = "vaadin:tools")
 @Route(value = "flow")//, layout = MainView.class)
+@RouteAlias(value="joe")
 @PageTitle("Flow Admin page")
 public class FlowView extends VerticalLayout {
 
