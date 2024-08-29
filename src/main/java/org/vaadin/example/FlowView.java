@@ -2,9 +2,8 @@ package org.vaadin.example;
 
 import jakarta.annotation.security.RolesAllowed;
 
-import com.vaadin.flow.component.html.H3;
-
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -15,7 +14,7 @@ import com.vaadin.flow.router.Route;
 /**
  * Flow view that is available only for users with role 'ADMIN'
  */
-@RolesAllowed("ADMIN")
+@RolesAllowed("USER")
 @Menu(title = "Flow admin", icon = "vaadin:tools")
 @Route("flow")
 @PageTitle("Flow Admin page")
@@ -33,6 +32,8 @@ public class FlowView extends VerticalLayout {
         button.setId("say-hello");
 
         add(new H3("Flow Admin View"), textField, button);
+
+        add(new PickerComponent());
     }
 
 }
