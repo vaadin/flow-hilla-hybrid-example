@@ -19,6 +19,7 @@ const vaadin = window.Vaadin as {
     documentTitleSignal: Signal<string>;
 };
 vaadin.documentTitleSignal = signal("");
+//@ts-ignore
 effect(() =>  document.title = vaadin.documentTitleSignal.value);
 
 export default function Layout() {
