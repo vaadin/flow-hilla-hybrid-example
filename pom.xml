@@ -203,6 +203,20 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <executions>
                             <execution>
+                                <id>install playwright</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>integration-test</phase>
+                                <configuration>
+                                    <executable>npm</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                        <argument>@playwright/test</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
                                 <id>run hilla tests</id>
                                 <goals>
                                     <goal>exec</goal>

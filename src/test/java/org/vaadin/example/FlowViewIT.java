@@ -1,6 +1,8 @@
 
 package org.vaadin.example;
 
+import java.util.regex.Pattern;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,10 +16,15 @@ import com.vaadin.uitest.common.BasePlayWrightIT;
 
 public class FlowViewIT extends BasePlayWrightIT {
 
+    private static final String BASE_URL = "http://localhost:8080/flow";
+
     @Override
     public String getUrl() {
-        return "http://localhost:8080/flow";
+        return BASE_URL;
     }
+
+    static String regex = BASE_URL + "(\\?continue)?$";
+    static Pattern pattern = Pattern.compile(regex);
 
     @BeforeEach
     public void setupTest() throws Exception {
@@ -26,8 +33,8 @@ public class FlowViewIT extends BasePlayWrightIT {
         fill(page.locator("vaadin-login-form vaadin-text-field"), "admin");
         fill(page.locator("vaadin-login-form vaadin-password-field"), "admin");
         click(page.locator("vaadin-login-form vaadin-button"));
-        page.waitForURL(getUrl());
-        page.waitForTimeout(300);
+        page.waitForURL(pattern);
+        page.waitForSelector("vaadin-button");
     }
 
 
@@ -57,6 +64,7 @@ public class FlowViewIT extends BasePlayWrightIT {
 
     @Test
     public void testClickButtonShowsHelloUserNotificationWhenUserIsNotEmpty() {
+        page.waitForSelector("vaadin-vertical-layout vaadin-text-field");
         fill(page.locator("vaadin-vertical-layout vaadin-text-field").first(), "Vaadiner");
         click(page.locator("vaadin-vertical-layout vaadin-button").first());
         assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Hello Vaadiner"));

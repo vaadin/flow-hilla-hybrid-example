@@ -3,6 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@playwright/test": "^1.47.2",
     "@polymer/polymer": "3.5.1",
     "@vaadin/bundles": "24.4.9",
     "@vaadin/common-frontend": "0.0.19",
@@ -119,7 +120,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "df9164f4e0b43dbeaa152abd61aec9c0eb990cb3659e6dd7df5c80c011ca6ef4"
+    "hash": "4c83ad87a3550cc3d21bca341bae0d1fba6be21be9bed38a707bb352611433cf"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -148,6 +149,10 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "@playwright/test": "$@playwright/test"
+  },
+  "scripts": {
+    "test": "playwright test"
   }
 }
