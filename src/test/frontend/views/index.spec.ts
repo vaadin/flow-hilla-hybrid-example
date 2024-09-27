@@ -6,7 +6,7 @@ function getUrl() {
 
 test.beforeEach(async ({ page }) => {
   await page.goto(getUrl());
-  await page.waitForURL(getUrl());
+  await page.waitForURL(new RegExp(`${getUrl()}(\\?continue)?`));
   await page.waitForTimeout(300);
 });
 
