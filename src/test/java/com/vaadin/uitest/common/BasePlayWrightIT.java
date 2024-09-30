@@ -34,6 +34,7 @@ public class BasePlayWrightIT implements HasTestView {
     // @formatter:on
 
     protected Page page;
+    protected static Playwright playwright;
     protected static Browser browser;
 
     @BeforeEach
@@ -46,18 +47,19 @@ public class BasePlayWrightIT implements HasTestView {
     }
 
     @AfterEach
-    public void cleanupTest() throws Exception {
+    public void cleanupTest() {
         page.close();
     }
 
     @AfterAll
-    public static void cleanup() throws Exception {
+    public static void cleanup() {
         browser.close();
+        playwright.close();
     }
 
     @BeforeAll
-    public static void setup() throws Exception {
-        Playwright playwright = Playwright.create();
+    public static void setup() {
+        playwright = Playwright.create();
         browser = playwright.chromium().launch(new LaunchOptions()
                 .setHeadless(System.getProperty("headless") == null || Boolean.getBoolean("headless")));
     }
@@ -78,7 +80,7 @@ public class BasePlayWrightIT implements HasTestView {
     }
 
     protected void click(Locator locator) {
-        if (locator.nth(0).locator("input").all().size() > 0) {
+        if (!locator.nth(0).locator("input").all().isEmpty()) {
             locator = locator.nth(0).locator("input");
         }
         locator.nth(0).click();
@@ -91,7 +93,7 @@ public class BasePlayWrightIT implements HasTestView {
     }
 
     protected void fill(Locator locator, String value) {
-        if (locator.first().locator("input").all().size() > 0) {
+        if (!locator.first().locator("input").all().isEmpty()) {
             locator = locator.first().locator("input");
         }
         locator.nth(0).fill(value);
