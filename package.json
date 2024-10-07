@@ -3,6 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@playwright/test": "^1.47.2",
     "@polymer/polymer": "3.5.1",
     "@vaadin/bundles": "24.4.10",
     "@vaadin/common-frontend": "0.0.19",
@@ -148,6 +149,10 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "@playwright/test": "$@playwright/test"
+  },
+  "scripts": {
+    "test": "playwright test"
   }
 }
