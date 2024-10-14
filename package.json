@@ -3,7 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.47.2",
     "@polymer/polymer": "3.5.2",
     "@vaadin/bundles": "24.5.0",
     "@vaadin/common-frontend": "0.0.19",
@@ -18,7 +18,7 @@
     "@vaadin/polymer-legacy-adapter": "24.5.0",
     "@vaadin/react-components": "24.5.0",
     "@vaadin/react-components-pro": "24.5.0",
-    "@vaadin/router": "^2.0.0-rc4",
+    "@vaadin/router": "2.0.0",
     "@vaadin/vaadin-development-mode-detector": "2.0.7",
     "@vaadin/vaadin-lumo-styles": "24.5.0",
     "@vaadin/vaadin-material-styles": "24.5.0",
@@ -79,7 +79,7 @@
       "@vaadin/polymer-legacy-adapter": "24.5.0",
       "@vaadin/react-components": "24.5.0",
       "@vaadin/react-components-pro": "24.5.0",
-      "@vaadin/router": "1.7.5",
+      "@vaadin/router": "2.0.0",
       "@vaadin/vaadin-development-mode-detector": "2.0.7",
       "@vaadin/vaadin-lumo-styles": "24.5.0",
       "@vaadin/vaadin-material-styles": "24.5.0",
@@ -124,7 +124,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "d01fef3da59774854e7384cc4bf5bdf42d1fd78ccf6b81f84535a49d9bb499b4"
+    "hash": "fc3b38f01881a42ca52d2da8039351745e2b29cb8e1e40fc3c3bb11157c74e9e"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
