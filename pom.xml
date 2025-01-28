@@ -90,7 +90,7 @@
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
-            <version>LATEST</version>
+            <version>1.49.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
