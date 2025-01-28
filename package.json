@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@playwright/test": "^1.48.2",
+    "@playwright/test": "^1.50.0",
     "@polymer/polymer": "3.5.2",
     "@vaadin/bundles": "24.6.3",
     "@vaadin/common-frontend": "0.0.19",
@@ -125,7 +125,7 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "0cf80c3a17f3d0c094819510ebf4f2d9b671aaa5b1b2bf76bfa0804ec5b0e22c"
+    "hash": "10b72642c3d6950560e4f18ae7e63fc01196ef3af77d392d4c84a5415d70da22"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
