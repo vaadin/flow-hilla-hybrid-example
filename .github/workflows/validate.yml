@@ -34,7 +34,8 @@ jobs:
       - name: Install browsers
         run: |
           npm install --ci
-          npx playwright install  
+          npx playwright install
+          sudo npx playwright install-deps
           npx playwright install chromium --with-deps
           npx playwright install-deps
       - name: Verify
