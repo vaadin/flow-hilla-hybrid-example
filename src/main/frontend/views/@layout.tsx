@@ -9,23 +9,30 @@ import {
 } from "@vaadin/react-components";
 import '@vaadin/icons';
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../auth";
 import { createMenuItems, useViewConfig } from '@vaadin/hilla-file-router/runtime.js';
 import { effect, Signal, signal } from "@vaadin/hilla-react-signals";
 
-const vaadin = window.Vaadin as {
-    documentTitleSignal: Signal<string>;
-};
-vaadin.documentTitleSignal = signal("");
-//@ts-ignore
-effect(() =>  document.title = vaadin.documentTitleSignal.value);
+const documentTitleSignal = signal('');
+effect(() => {
+    document.title = documentTitleSignal.value;
+});
+
+// Publish for Vaadin to use
+(window as any).Vaadin.documentTitleSignal = documentTitleSignal;
 
 export default function Layout() {
+    const currentTitle = useViewConfig()?.title;
     const navigate = useNavigate();
     const location = useLocation();
-    vaadin.documentTitleSignal.value = useViewConfig()?.title ?? '';
+
+    useEffect(() => {
+        if (currentTitle) {
+            documentTitleSignal.value = currentTitle;
+        }
+    }, [currentTitle]);
 
 
     const { state, logout } = useAuth();
@@ -79,7 +86,7 @@ export default function Layout() {
 
             <DrawerToggle slot="navbar" aria-label="Menu toggle"></DrawerToggle>
             <h2 slot="navbar" className="text-l m-0">
-                {vaadin.documentTitleSignal}
+                {documentTitleSignal}
             </h2>
 
             <Suspense fallback={<Placeholder />}>
