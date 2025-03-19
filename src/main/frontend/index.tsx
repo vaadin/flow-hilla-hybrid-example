@@ -10,6 +10,7 @@ import { AuthProvider } from './auth';
 
 function App() {
     return <AuthProvider>
+      <RouterProvider router={router} />
     </AuthProvider>;
 }
 
