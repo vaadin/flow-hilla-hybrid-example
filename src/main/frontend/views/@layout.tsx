@@ -10,7 +10,7 @@ import {
 import '@vaadin/icons';
 import Placeholder from 'Frontend/components/placeholder/Placeholder.js';
 import { Suspense, useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useAuth } from "../auth";
 import { createMenuItems, useViewConfig } from '@vaadin/hilla-file-router/runtime.js';
 import { effect, Signal, signal } from "@vaadin/hilla-react-signals";
