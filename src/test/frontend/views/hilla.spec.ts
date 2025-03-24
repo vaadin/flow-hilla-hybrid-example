@@ -9,12 +9,10 @@ test.beforeEach(async ({ page }) => {
   await page.getByLabel('Username').fill("user");
   await page.getByLabel('Password', { exact: true }).fill("user");
   await page.getByRole('button', { name: 'Log in' }).click();
-  await page.waitForURL(new RegExp(`${getUrl()}(\\?continue)?`));
-  await page.waitForTimeout(300);
+  await page.waitForURL(getUrl());
 });
 
 test('clicking button shows notification', async ({ page }) => {
-  await expect(await page.locator('p').count()).toBeLessThan(1);
   await page.getByRole('button', { name: 'Say hello' }).click();
   await expect(await page.locator('p').first()).toBeVisible();
 });

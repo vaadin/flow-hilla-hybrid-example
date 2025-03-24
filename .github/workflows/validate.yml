@@ -38,6 +38,7 @@ jobs:
           npx playwright install-deps
       - name: Verify
         run: |
+          ./mvnw -B -V -ntp package -Pproduction
           ./mvnw -B -V -ntp verify -Pit,production
       - uses: actions/upload-artifact@v4
         with:

@@ -1,12 +1,11 @@
 {
   "name": "no-name",
   "scripts": {
-    "test": "playwright test"
+    "test": "npx playwright install chromium && npx playwright test"
   },
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@playwright/test": "^1.50.0",
     "@polymer/polymer": "3.5.2",
     "@vaadin/bundles": "24.7.1",
     "@vaadin/common-frontend": "0.0.19",
@@ -37,9 +36,11 @@
   },
   "devDependencies": {
     "@babel/preset-react": "7.26.3",
+    "@playwright/test": "^1.50.0",
     "@preact/signals-react-transform": "0.5.1",
     "@rollup/plugin-replace": "6.0.2",
     "@rollup/pluginutils": "5.1.4",
+    "@types/node": "latest",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@vaadin/hilla-generator-cli": "24.7.0",
@@ -128,7 +129,7 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "7dca6073e2f66e1f4aeda8bd5fe3a4fcd3e08fd8daf174454e49df5d57371145"
+    "hash": "4c04bcd799f4d1f0a6b2d6258021e28ad249e70ec76fdb3e271a9d230d3b6927"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
