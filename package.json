@@ -1,12 +1,11 @@
 {
   "name": "no-name",
   "scripts": {
-    "test": "playwright test"
+    "test": "npm install && npx playwright install chromium && npx playwright test"
   },
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@playwright/test": "^1.50.0",
     "@polymer/polymer": "3.5.2",
     "@vaadin/bundles": "24.7.1",
     "@vaadin/common-frontend": "0.0.19",
@@ -37,9 +36,11 @@
   },
   "devDependencies": {
     "@babel/preset-react": "7.26.3",
+    "@playwright/test": "^1.51.1",
     "@preact/signals-react-transform": "0.5.1",
     "@rollup/plugin-replace": "6.0.2",
     "@rollup/pluginutils": "5.1.4",
+    "@types/node": "latest",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@vaadin/hilla-generator-cli": "24.7.0",
@@ -61,7 +62,7 @@
     "strip-css-comments": "5.0.0",
     "transform-ast": "2.4.4",
     "typescript": "5.7.3",
-    "vite": "6.2.2",
+    "vite": "^6.2.3",
     "vite-plugin-checker": "0.8.0",
     "workbox-build": "7.3.0",
     "workbox-core": "7.3.0",
@@ -128,7 +129,7 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "7dca6073e2f66e1f4aeda8bd5fe3a4fcd3e08fd8daf174454e49df5d57371145"
+    "hash": "c583d31b73712b5fd5a6f6c52db58bd6e0be6ac888ba8516cb864a11155eb066"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
