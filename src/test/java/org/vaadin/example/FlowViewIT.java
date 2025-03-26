@@ -43,7 +43,8 @@ public class FlowViewIT extends BasePlayWrightIT {
         assertFalse(page.locator("vaadin-vertical-layout p").count() > 0);
         page.getByLabel("Your name").click();
         click(page.locator("vaadin-vertical-layout vaadin-button").first());
-        assertEquals(1, page.locator("p").count());
+        page.locator("vaadin-vertical-layout p").waitFor();
+        assertEquals(1, page.locator("vaadin-vertical-layout p").count());
     }
 
     @Test
