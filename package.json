@@ -1,7 +1,7 @@
 {
   "name": "no-name",
   "scripts": {
-    "test": "npx playwright install chromium && npx playwright test"
+    "test": "npm install && npx playwright install chromium && npx playwright test"
   },
   "license": "UNLICENSED",
   "type": "module",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "7.26.3",
-    "@playwright/test": "^1.50.0",
+    "@playwright/test": "^1.51.1",
     "@preact/signals-react-transform": "0.5.1",
     "@rollup/plugin-replace": "6.0.2",
     "@rollup/pluginutils": "5.1.4",
@@ -129,7 +129,7 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "4c04bcd799f4d1f0a6b2d6258021e28ad249e70ec76fdb3e271a9d230d3b6927"
+    "hash": "c583d31b73712b5fd5a6f6c52db58bd6e0be6ac888ba8516cb864a11155eb066"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",

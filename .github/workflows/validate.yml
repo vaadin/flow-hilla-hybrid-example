@@ -35,8 +35,9 @@ jobs:
         run: ./mvnw -B -V -ntp package
       - name: Install playwright
         run: |
+          npm install
           npx playwright install chromium --with-deps
-          # npx playwright install-deps
+          npx playwright install-deps
       - if: ${{ env.ACT }}
         name: Install ACT dependencies (only in ACT)
         run: |
@@ -45,7 +46,7 @@ jobs:
               echo "export $i='"$H"'" >> vars.sh
           done
           sudo apt-get update -qq
-          sudo apt-get install -qq -y vim iputils-ping curl netcat-openbsd net-tools libxcursor1 libgtk-3-0t64
+          sudo apt-get install -qq -y vim iputils-ping curl netcat-openbsd net-tools
         shell: bash
       - name: Test flow & hilla
         run: ./mvnw -B -V -ntp verify -Pit
