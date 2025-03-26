@@ -1,12 +1,11 @@
 
 package org.vaadin.example;
 
-import java.util.regex.Pattern;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +22,6 @@ public class FlowViewIT extends BasePlayWrightIT {
         return BASE_URL;
     }
 
-    static String regex = BASE_URL + "(\\?continue)?$";
-    static Pattern pattern = Pattern.compile(regex);
-
     @BeforeEach
     public void setupTest() throws Exception {
         super.setupTest();
@@ -33,10 +29,14 @@ public class FlowViewIT extends BasePlayWrightIT {
         fill(page.locator("vaadin-login-form vaadin-text-field"), "admin");
         fill(page.locator("vaadin-login-form vaadin-password-field"), "admin");
         click(page.locator("vaadin-login-form vaadin-button"));
-        page.waitForURL(pattern);
+        page.waitForURL(BASE_URL);
         page.waitForSelector("vaadin-button");
     }
 
+    @AfterEach
+    public void tearDown() {
+        page.close();
+    }
 
     @Test
     public void clickingButtonShowsNotification() throws Exception {
