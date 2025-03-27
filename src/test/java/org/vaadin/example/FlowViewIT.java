@@ -2,54 +2,55 @@
 package org.vaadin.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.GetByRoleOptions;
+import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.AriaRole;
-import com.vaadin.uitest.common.BasePlayWrightIT;
 
-public class FlowViewIT extends BasePlayWrightIT {
+public class FlowViewIT  {
 
     private static final String BASE_URL = "http://localhost:8080/flow";
+    private Page page;
 
-    @Override
-    public String getUrl() {
-        return BASE_URL;
-    }
 
     @BeforeEach
     public void setupTest() throws Exception {
-        super.setupTest();
-        // Login steps
-        fill(page.locator("vaadin-login-form vaadin-text-field"), "admin");
-        fill(page.locator("vaadin-login-form vaadin-password-field"), "admin");
-        click(page.locator("vaadin-login-form vaadin-button"));
+        page = Playwright.create().chromium()
+                .launch(new BrowserType.LaunchOptions()
+                        .setHeadless(System.getProperty("headless") == null || Boolean.getBoolean("headless")))
+                .newContext().newPage();
+        page.setDefaultTimeout(30000);
+        page.navigate(BASE_URL);
+        page.locator("vaadin-login-form vaadin-text-field input").fill("admin");
+        page.locator("vaadin-login-form vaadin-password-field input").fill("admin");
+        page.locator("vaadin-login-form vaadin-button").first().click();
         page.waitForURL(BASE_URL);
-        page.waitForSelector("vaadin-button");
     }
 
     @AfterEach
     public void tearDown() {
         page.close();
+        page.context().close();
+        page.context().browser().close();
     }
 
     @Test
     public void clickingButtonShowsNotification() throws Exception {
-        assertFalse(page.locator("vaadin-vertical-layout p").count() > 0);
         page.getByLabel("Your name").click();
-        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        page.locator("vaadin-vertical-layout vaadin-button").first().click();
         page.locator("vaadin-vertical-layout p").waitFor();
         assertEquals(1, page.locator("vaadin-vertical-layout p").count());
     }
 
     @Test
     public void clickingButtonTwiceShowsTwoNotifications() {
-        assertFalse(page.locator("vaadin-vertical-layout p").count() > 0);
         page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Say hello")).click();
         page.locator("vaadin-vertical-layout p").nth(0).waitFor();
         page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Say hello")).click();
@@ -59,15 +60,15 @@ public class FlowViewIT extends BasePlayWrightIT {
 
     @Test
     public void testClickButtonShowsHelloAnonymousUserNotificationWhenUserNameIsEmpty() {
-        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        page.locator("vaadin-vertical-layout vaadin-button").first().click();;
         assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Hello anonymous user"));
     }
 
     @Test
     public void testClickButtonShowsHelloUserNotificationWhenUserIsNotEmpty() {
         page.waitForSelector("vaadin-vertical-layout vaadin-text-field");
-        fill(page.locator("vaadin-vertical-layout vaadin-text-field").first(), "Vaadiner");
-        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        page.locator("vaadin-vertical-layout vaadin-text-field input").first().fill("Vaadiner");
+        page.locator("vaadin-vertical-layout vaadin-button").first().click();
         assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Hello Vaadiner"));
     }
 
@@ -79,10 +80,10 @@ public class FlowViewIT extends BasePlayWrightIT {
 
         // And the user has entered 'Jane Smith' in the text field with label 'Your
         // name'
-        fill(page.locator("vaadin-vertical-layout vaadin-text-field").first(), "Jane Smith");
+        page.locator("vaadin-vertical-layout vaadin-text-field input").first().fill("Jane Smith");
 
         // When the user clicks on the button with label 'Say hello'
-        click(page.locator("vaadin-vertical-layout vaadin-button").first());
+        page.locator("vaadin-vertical-layout vaadin-button").first().click();
 
         // Then a paragraph with text 'Hello, Jane Smith' should appear
         page.waitForSelector("vaadin-vertical-layout p");

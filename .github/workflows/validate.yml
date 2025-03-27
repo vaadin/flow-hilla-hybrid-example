@@ -28,7 +28,10 @@ jobs:
           distribution: 'temurin'
       - uses: actions/cache@v4
         with:
-          path: ~/.m2/repository
+          path: |
+            ~/.m2/repository
+            ~/.npm
+            ~/.cache/ms-playwright
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Package application
