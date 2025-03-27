@@ -17,13 +17,14 @@ import com.microsoft.playwright.options.AriaRole;
 public class FlowViewIT  {
 
     private static final String BASE_URL = "http://localhost:8080/flow";
-    Page page;
+    private Page page;
+
 
     @BeforeEach
     public void setupTest() throws Exception {
         page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newContext().newPage();
         page.setDefaultTimeout(30000);
-        page.navigate("http://localhost:8080/flow");
+        page.navigate(BASE_URL);
         page.locator("vaadin-login-form vaadin-text-field input").fill("admin");
         page.locator("vaadin-login-form vaadin-password-field input").fill("admin");
         page.locator("vaadin-login-form vaadin-button").first().click();
@@ -33,14 +34,15 @@ public class FlowViewIT  {
     @AfterEach
     public void tearDown() {
         page.close();
+        page.context().close();
+        page.context().browser().close();
     }
 
     @Test
     public void clickingButtonShowsNotification() throws Exception {
         page.getByLabel("Your name").click();
         page.locator("vaadin-vertical-layout vaadin-button").first().click();
-        page.waitForSelector("vaadin-vertical-layout p");
-        page.locator("vaadin-vertical-layout p").nth(0).waitFor();
+        page.locator("vaadin-vertical-layout p").waitFor();
         assertEquals(1, page.locator("vaadin-vertical-layout p").count());
     }
 
