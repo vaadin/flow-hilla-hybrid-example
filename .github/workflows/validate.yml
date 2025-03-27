@@ -37,12 +37,12 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
-      - name: 👉 Package application 👈
+      - name: 👉 Package application
         run: ./mvnw -B -V -ntp package -Pproduction
-      - name: 👉 Install playwright 👈
+      - name: 👉 Install playwright
         run: npx playwright install chromium --with-deps
       - if: ${{ env.ACT }}
-        name: 👉 Install ACT dependencies (only in ACT) 👈
+        name: 👉 Install ACT dependencies (only in ACT)
         run: |
           for i in PATH ; do
               H=`eval 'echo $'$i`
@@ -52,8 +52,10 @@ jobs:
           sudo apt-get install -qq -y vim iputils-ping curl netcat-openbsd net-tools
           npx playwright install-deps
         shell: bash
-      - name: 👉 Test flow & hilla 👈
-        run: ./mvnw -B -V -ntp verify -Pit
+      - name: 👉 Test flow & hilla in Prod-Mode
+        run: ./mvnw -B -V -ntp verify -Pit -Pproduction
+      - name: 👉 Test flow & hilla in Dev-Mode
+        run: ./mvnw -B -V -ntp clean verify -Pit
       - if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:

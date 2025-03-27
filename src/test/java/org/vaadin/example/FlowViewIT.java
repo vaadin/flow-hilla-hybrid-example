@@ -4,6 +4,8 @@ package org.vaadin.example;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,7 @@ public class FlowViewIT  {
         page.locator("vaadin-login-form vaadin-text-field input").fill("admin");
         page.locator("vaadin-login-form vaadin-password-field input").fill("admin");
         page.locator("vaadin-login-form vaadin-button").first().click();
-        page.waitForURL(BASE_URL);
+        page.waitForURL(Pattern.compile(BASE_URL + ".*"));
     }
 
     @AfterEach

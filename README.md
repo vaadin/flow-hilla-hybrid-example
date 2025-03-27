@@ -82,4 +82,6 @@ Vaadin web applications are full-stack and include both client-side and server-s
 | &nbsp;&nbsp;&nbsp;&nbsp;`Application.java`                    | Server entrypoint                  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`FlowView.java`                       | Server-side view for 'ADMIN'       |
 | &nbsp;&nbsp;&nbsp;&nbsp;`GreetService.java`                   | Back-end service example           |
+| `src/test/frontend/`                                          | TS Tests for Hilla views           |
+| `src/test/java/`                                              | Java Tests for Flow views          |
 
