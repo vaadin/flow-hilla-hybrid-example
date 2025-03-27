@@ -22,7 +22,10 @@ public class FlowViewIT  {
 
     @BeforeEach
     public void setupTest() throws Exception {
-        page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newContext().newPage();
+        page = Playwright.create().chromium()
+                .launch(new BrowserType.LaunchOptions()
+                        .setHeadless(System.getProperty("headless") == null || Boolean.getBoolean("headless")))
+                .newContext().newPage();
         page.setDefaultTimeout(30000);
         page.navigate(BASE_URL);
         page.locator("vaadin-login-form vaadin-text-field input").fill("admin");
