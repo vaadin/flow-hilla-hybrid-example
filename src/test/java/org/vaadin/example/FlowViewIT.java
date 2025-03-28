@@ -26,7 +26,7 @@ public class FlowViewIT  {
     public void setupTest() throws Exception {
         page = Playwright.create().chromium()
                 .launch(new BrowserType.LaunchOptions()
-                        .setHeadless(System.getProperty("headless") == null || Boolean.getBoolean("headless")))
+                        .setHeadless(System.getProperty("test.headless") == null || Boolean.getBoolean("test.headless")))
                 .newContext().newPage();
         page.setDefaultTimeout(30000);
         page.navigate(BASE_URL);

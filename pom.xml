@@ -191,7 +191,7 @@
                                 </goals>
                                 <configuration>
                                     <source><![CDATA[
-                                        pom.properties['headed'] = pom.properties['headless'] && pom.properties['headless'] == 'false' ? '--headed' : '';
+                                        pom.properties['headed'] = pom.properties['test.headless'] && pom.properties['test.headless'] == 'false' ? '--headed' : '';
                                     ]]></source>
                                 </configuration>
                             </execution>
