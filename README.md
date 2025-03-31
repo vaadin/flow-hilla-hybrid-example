@@ -43,7 +43,7 @@ mvn verify -Pit,production
 For running tests in headed mode run:
 
 ```
-mvn verify -Pit,production -Dheadless=false
+mvn verify -Pit,production -Dtest.headless=false
 ```
 
 
