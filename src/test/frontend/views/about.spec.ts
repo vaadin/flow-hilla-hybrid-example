@@ -25,6 +25,7 @@ test.beforeEach(async ({ page }) => {
   await page.getByLabel('Password', { exact: true }).fill("user");
   await page.getByRole('button', { name: 'Log in' }).click();
   await page.waitForURL(new RegExp(getUrl() + '.*'));
+  await page.waitForFunction(() => (window as any)?.Vaadin?.Flow?.clients);
 });
 
 test('should display a view for authenticated users', async ({ page }) => {

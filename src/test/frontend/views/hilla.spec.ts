@@ -9,7 +9,9 @@ test.beforeEach(async ({ page }) => {
   await page.getByLabel('Username').fill("user");
   await page.getByLabel('Password', { exact: true }).fill("user");
   await page.getByRole('button', { name: 'Log in' }).click();
+  await page.waitForTimeout(200);
   await page.waitForURL(new RegExp(getUrl() + '.*'));
+  await page.waitForFunction(() => (window as any)?.Vaadin?.Flow?.clients);
 });
 
 test('clicking button shows notification', async ({ page }) => {

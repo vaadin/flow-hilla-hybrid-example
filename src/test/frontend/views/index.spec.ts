@@ -8,6 +8,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto(getUrl());
   await page.waitForURL(getUrl());
   await page.waitForLoadState();
+  await page.waitForFunction(() => (window as any)?.Vaadin?.Flow?.clients);
 });
 
 test('showld display a public message ', async ({ page }) => {
