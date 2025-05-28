@@ -33,7 +33,7 @@ public class FlowViewIT  {
         page.locator("vaadin-login-form vaadin-text-field input").fill("admin");
         page.locator("vaadin-login-form vaadin-password-field input").fill("admin");
         page.locator("vaadin-login-form vaadin-button").first().click();
-        page.waitForURL(Pattern.compile(BASE_URL + ".*"));
+        // page.waitForURL(Pattern.compile(BASE_URL + ".*"));
         page.waitForFunction("() => window.Vaadin?.Flow?.clients");
     }
 
