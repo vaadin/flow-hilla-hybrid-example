@@ -1,42 +1,35 @@
 package org.vaadin.example.security;
 
+import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
+import com.vaadin.flow.spring.security.VaadinSecurityConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import com.vaadin.flow.spring.security.VaadinWebSecurity;
-import com.vaadin.hilla.route.RouteUtil;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig extends VaadinWebSecurity {
-    private final RouteUtil routeUtil;
+@Import(VaadinAwareSecurityContextHolderStrategyConfiguration.class)
+public class SecurityConfig {
 
-    public SecurityConfig(RouteUtil routeUtil) {
-        this.routeUtil = routeUtil;
-    }
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(registry ->
+                registry.requestMatchers("/", "/images/**").permitAll()
+        );
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(registry -> {
-            registry.requestMatchers(new AntPathRequestMatcher("/")).permitAll();
-            registry.requestMatchers(routeUtil::isRouteAllowed).permitAll();
-        });
-        super.configure(http);
-        setLoginView(http, "/login", "/");
-    }
+        // Apply Vaadin security and set the login and logout success URLs
+        http.with(VaadinSecurityConfigurer.vaadin(), configurer ->
+                configurer.loginView("/login", "/")
+        );
 
-    @Override
-    protected void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.ignoring().requestMatchers(new AntPathRequestMatcher("/images/**"));
+        return http.build();
     }
 
     @Bean
