@@ -1,12 +1,9 @@
 
 package org.vaadin.example;
 
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.regex.Pattern;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,23 +13,26 @@ import com.microsoft.playwright.Page.GetByRoleOptions;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.AriaRole;
 
-public class FlowViewIT  {
+public class FlowViewIT {
 
     private static final String BASE_URL = "http://localhost:8080/flow";
     private Page page;
-
 
     @BeforeEach
     public void setupTest() throws Exception {
         page = Playwright.create().chromium()
                 .launch(new BrowserType.LaunchOptions()
-                        .setHeadless(System.getProperty("test.headless") == null || Boolean.getBoolean("test.headless")))
+                        .setHeadless(
+                                System.getProperty("test.headless") == null || Boolean.getBoolean("test.headless")))
                 .newContext().newPage();
         page.setDefaultTimeout(30000);
         page.navigate(BASE_URL);
-        page.locator("vaadin-login-form vaadin-text-field input").fill("admin");
-        page.locator("vaadin-login-form vaadin-password-field input").fill("admin");
-        page.locator("vaadin-login-form vaadin-button").first().click();
+        // Using combined selector for Vaadin 24 and 25 compatibility
+        page.locator("vaadin-login-overlay vaadin-text-field input, vaadin-login-form vaadin-text-field input")
+                .fill("admin");
+        page.locator("vaadin-login-overlay vaadin-password-field input, vaadin-login-form vaadin-password-field input")
+                .fill("admin");
+        page.locator("vaadin-login-overlay vaadin-button, vaadin-login-form vaadin-button").first().click();
         // page.waitForURL(Pattern.compile(BASE_URL + ".*"));
         page.waitForFunction("() => window.Vaadin?.Flow?.clients");
     }
@@ -63,7 +63,7 @@ public class FlowViewIT  {
 
     @Test
     public void testClickButtonShowsHelloAnonymousUserNotificationWhenUserNameIsEmpty() {
-        page.locator("vaadin-vertical-layout vaadin-button").first().click();;
+        page.locator("vaadin-vertical-layout vaadin-button").first().click();
         assertTrue(page.locator("vaadin-vertical-layout p").textContent().contains("Hello anonymous user"));
     }
 
