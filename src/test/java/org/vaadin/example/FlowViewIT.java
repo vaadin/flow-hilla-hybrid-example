@@ -1,6 +1,7 @@
 
 package org.vaadin.example;
 
+import com.microsoft.playwright.Locator;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,6 +36,9 @@ public class FlowViewIT {
         page.locator("vaadin-login-overlay vaadin-button, vaadin-login-form vaadin-button").first().click();
         // page.waitForURL(Pattern.compile(BASE_URL + ".*"));
         page.waitForFunction("() => window.Vaadin?.Flow?.clients");
+        page.locator("vaadin-vertical-layout").waitFor(
+                new Locator.WaitForOptions().setTimeout(60000) // 60 seconds
+        );
     }
 
     @AfterEach
