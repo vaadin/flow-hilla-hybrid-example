@@ -9,8 +9,11 @@ test.beforeEach(async ({ page }) => {
   await page.getByLabel('Username').fill("user");
   await page.getByLabel('Password', { exact: true }).fill("user");
   await page.getByRole('button', { name: 'Log in' }).click();
-  await page.waitForTimeout(200);
-  await page.waitForURL(new RegExp(getUrl() + '.*'));
+  // The Hilla auth flow navigates and then triggers window.location.reload();
+  // give the post-login reload up to 60s to settle before checking Flow state,
+  // otherwise the wait can race against the reload on slower CI runs.
+  await page.waitForURL(new RegExp(getUrl() + '.*'), { timeout: 60000 });
+  await page.waitForLoadState();
   await page.waitForFunction(() => (window as any)?.Vaadin?.Flow?.clients);
 });
 

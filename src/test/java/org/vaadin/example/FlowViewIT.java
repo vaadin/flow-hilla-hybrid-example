@@ -1,6 +1,8 @@
 
 package org.vaadin.example;
 
+import java.util.regex.Pattern;
+
 import com.microsoft.playwright.Locator;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.GetByRoleOptions;
+import com.microsoft.playwright.Page.WaitForURLOptions;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.AriaRole;
 
@@ -34,7 +37,12 @@ public class FlowViewIT {
         page.locator("vaadin-login-overlay vaadin-password-field input, vaadin-login-form vaadin-password-field input")
                 .fill("admin");
         page.locator("vaadin-login-overlay vaadin-button, vaadin-login-form vaadin-button").first().click();
-        // page.waitForURL(Pattern.compile(BASE_URL + ".*"));
+        // After login the Hilla auth flow navigates and reloads the page back to
+        // the originally-requested URL; wait for that navigation to settle before
+        // probing Flow internals, otherwise the wait can race against the reload.
+        page.waitForURL(Pattern.compile(BASE_URL + ".*"),
+                new WaitForURLOptions().setTimeout(60000));
+        page.waitForLoadState();
         page.waitForFunction("() => window.Vaadin?.Flow?.clients");
         page.locator("vaadin-vertical-layout").waitFor(
                 new Locator.WaitForOptions().setTimeout(60000) // 60 seconds
