@@ -234,7 +234,7 @@
       "workbox-routing": "7.4.0",
       "workbox-strategies": "7.4.0"
     },
-    "hash": "902cd26651ea628a744362477a795accfba5991fc0200ca249ee2b5df7ed1e86",
+    "hash": "6d9fa5bf1c8e765d9962b1a625c1d4d756bb0131717147154b14b6308435044c",
     "overrides": {
       "@polymer/polymer": "$@polymer/polymer",
       "@vaadin/a11y-base": "24.10.1",
