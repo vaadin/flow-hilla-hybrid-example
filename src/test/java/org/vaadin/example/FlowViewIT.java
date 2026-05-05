@@ -34,9 +34,13 @@ public class FlowViewIT {
         // Using combined selector for Vaadin 24 and 25 compatibility
         page.locator("vaadin-login-overlay vaadin-text-field input, vaadin-login-form vaadin-text-field input")
                 .fill("admin");
-        page.locator("vaadin-login-overlay vaadin-password-field input, vaadin-login-form vaadin-password-field input")
-                .fill("admin");
-        page.locator("vaadin-login-overlay vaadin-button, vaadin-login-form vaadin-button").first().click();
+        Locator passwordInput = page.locator(
+                "vaadin-login-overlay vaadin-password-field input, vaadin-login-form vaadin-password-field input");
+        passwordInput.fill("admin");
+        // Submit via Enter rather than clicking the button: vaadin-login-overlay
+        // teleports its content into a separate overlay root, which can make the
+        // button click occasionally miss the form-submit handler on slow CI.
+        passwordInput.press("Enter");
         // After login the Hilla auth flow navigates and reloads the page back to
         // the originally-requested URL; wait for that navigation to settle before
         // probing Flow internals, otherwise the wait can race against the reload.

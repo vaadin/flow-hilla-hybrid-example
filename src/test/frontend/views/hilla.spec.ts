@@ -5,13 +5,13 @@ function getUrl() {
 }
 
 test.beforeEach(async ({ page }) => {
+  // Default per-test timeout is 30s, but the Hilla auth flow does a navigate+reload
+  // that can take longer on slow CI; extend so the 60s waitForURL below can run.
+  test.setTimeout(120000);
   await page.goto(getUrl());
   await page.getByLabel('Username').fill("user");
   await page.getByLabel('Password', { exact: true }).fill("user");
   await page.getByRole('button', { name: 'Log in' }).click();
-  // The Hilla auth flow navigates and then triggers window.location.reload();
-  // give the post-login reload up to 60s to settle before checking Flow state,
-  // otherwise the wait can race against the reload on slower CI runs.
   await page.waitForURL(new RegExp(getUrl() + '.*'), { timeout: 60000 });
   await page.waitForLoadState();
   await page.waitForFunction(() => (window as any)?.Vaadin?.Flow?.clients);
