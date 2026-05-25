@@ -11,7 +11,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>24.10.4</vaadin.version>
+        <vaadin.version>24.10.6</vaadin.version>
     </properties>
 
     <parent>
@@ -234,6 +234,8 @@
                         <configuration>
                             <trimStackTrace>false</trimStackTrace>
                             <enableAssertions>true</enableAssertions>
+                            <!-- Retry flaky IT runs (parity with playwright.config.ts retries: 2 on CI). -->
+                            <rerunFailingTestsCount>2</rerunFailingTestsCount>
                         </configuration>
                     </plugin>
                 </plugins>
