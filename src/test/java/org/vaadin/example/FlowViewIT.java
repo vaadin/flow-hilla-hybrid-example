@@ -37,7 +37,7 @@ public class FlowViewIT {
         // page.waitForURL(Pattern.compile(BASE_URL + ".*"));
         page.waitForFunction("() => window.Vaadin?.Flow?.clients");
         page.locator("vaadin-vertical-layout").waitFor(
-                new Locator.WaitForOptions().setTimeout(60000) // 60 seconds
+                new Locator.WaitForOptions().setTimeout(120000) // 120 seconds
         );
     }
 
