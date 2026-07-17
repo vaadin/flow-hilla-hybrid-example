@@ -37,6 +37,12 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
+      - name: Set TB License
+        env:
+          VAADIN_PRO_KEY: ${{ secrets.VAADIN_PRO_KEY }}
+        run: |
+          mkdir -p ~/.vaadin/
+          echo '{"username":"'`echo $VAADIN_PRO_KEY | cut -d / -f1`'","proKey":"'`echo $VAADIN_PRO_KEY | cut -d / -f2`'"}' > ~/.vaadin/proKey
       - name: 👉 Package application
         run: ./mvnw -B -V -ntp package -Pproduction
       - name: 👉 Install playwright
